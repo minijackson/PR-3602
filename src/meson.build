@@ -1,1 +1,1 @@
-# shared_library('salesman_awesome', fichiers)
+shared_library('salesman_awesome', 'psg/psg.cpp')
