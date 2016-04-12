@@ -10,6 +10,7 @@ namespace awesome {
 	 * Detailed description
 	 */
 	class Heuristic {
+	protected:
 		using EdgeWeightProperty = boost::property<boost::edge_weight_t, int>;
 
 		using Graph = boost::adjacency_list<boost::vecS,
@@ -33,7 +34,7 @@ namespace awesome {
 		virtual int operator()(int node) = 0;
 
 	protected:
-		virtual ~Heuristic() = 0;
+		virtual ~Heuristic() = default;
 
 		Graph& psg;
 		MapGraph& map;
