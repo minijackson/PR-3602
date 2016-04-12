@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 }
 
 
-BOOST_AUTO_TEST_CASE(test) {
+BOOST_AUTO_TEST_CASE(mapgen_basic_csv_reading) {
 	using awesome::MapGen;
 	MapGen::MapGraph map = MapGen::fromFile("1.csv");
 

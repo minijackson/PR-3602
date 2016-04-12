@@ -3,6 +3,7 @@
 
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/labeled_graph.hpp>
 
 namespace awesome {
 	/*! \brief Heuristic description
@@ -13,18 +14,20 @@ namespace awesome {
 	protected:
 		using EdgeWeightProperty = boost::property<boost::edge_weight_t, int>;
 
-		using Graph = boost::adjacency_list<boost::vecS,
-		                                    boost::vecS,
-		                                    boost::directedS,
-		                                    boost::no_property,
-		                                    EdgeWeightProperty>;
-		using MapGraph = boost::adjacency_list<boost::vecS,
-		                                       boost::vecS,
-		                                       boost::directedS,
-		                                       boost::no_property,
-		                                       EdgeWeightProperty>;
-
 	public:
+		using Graph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
+		                                                         boost::vecS,
+		                                                         boost::directedS,
+		                                                         boost::no_property,
+		                                                         EdgeWeightProperty>,
+		                                   std::string>;
+		using MapGraph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
+		                                                            boost::vecS,
+		                                                            boost::directedS,
+		                                                            boost::no_property,
+		                                                            EdgeWeightProperty>,
+		                                      std::string>;
+
 		/*! \brief Heuristic description
 		 *
 		 * Detailed description

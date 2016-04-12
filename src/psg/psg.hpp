@@ -3,6 +3,7 @@
 
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/labeled_graph.hpp>
 
 namespace awesome {
 
@@ -13,18 +14,20 @@ namespace awesome {
 	class PSG {
 		using EdgeWeightProperty = boost::property<boost::edge_weight_t, int>;
 
-		using Graph = boost::adjacency_list<boost::vecS,
-		                                    boost::vecS,
-		                                    boost::directedS,
-		                                    boost::no_property,
-		                                    EdgeWeightProperty>;
+		using Graph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
+		                                                         boost::vecS,
+		                                                         boost::directedS,
+		                                                         boost::no_property,
+		                                                         EdgeWeightProperty>,
+		                                   std::string>;
 		using VertexIt = boost::graph_traits<Graph>::vertex_iterator;
 
-		using MapGraph = boost::adjacency_list<boost::vecS,
-		                                       boost::vecS,
-		                                       boost::directedS,
-		                                       boost::no_property,
-		                                       EdgeWeightProperty>;
+		using MapGraph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
+		                                                            boost::vecS,
+		                                                            boost::directedS,
+		                                                            boost::no_property,
+		                                                            EdgeWeightProperty>,
+		                                      std::string>;
 		using MapGraphVertexIt = boost::graph_traits<MapGraph>::vertex_iterator;
 
 	public:

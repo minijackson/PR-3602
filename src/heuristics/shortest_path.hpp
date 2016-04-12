@@ -11,6 +11,7 @@ namespace awesome {
 	 */
 	class ShortestPathHeuristic : public Heuristic {
 	public:
+		ShortestPathHeuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap);
 
 		int operator()(int node) override;
 

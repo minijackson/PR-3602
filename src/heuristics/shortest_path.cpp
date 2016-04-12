@@ -4,6 +4,9 @@
 
 namespace awesome {
 
+	ShortestPathHeuristic::ShortestPathHeuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap)
+	      : Heuristic(psg, map, degradedMap) {}
+
 	int ShortestPathHeuristic::operator()(int node) {
 
 		int min = std::numeric_limits<int>::max();
@@ -17,6 +20,7 @@ namespace awesome {
 
 		MapGraph::vertex_iterator verticesBeginIt, verticesEndIt;
 		boost::tie(verticesBeginIt, verticesEndIt) = boost::vertices(degradedMap);
+
 		return min * (std::distance(verticesBeginIt, verticesEndIt) - 1);
 	}
 }
