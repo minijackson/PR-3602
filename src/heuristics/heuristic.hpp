@@ -34,7 +34,7 @@ namespace awesome {
 		 */
 		Heuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap);
 
-		virtual int operator()(int node) = 0;
+		virtual int operator()(std::string node) = 0;
 
 	protected:
 		virtual ~Heuristic() = default;
