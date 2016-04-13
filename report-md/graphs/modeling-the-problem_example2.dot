@@ -1,0 +1,27 @@
+graph g {
+    ell3[label="…"];
+    ell4[label="…"];
+    abc[color=red,penwidth=3.0];
+    ø -- a -- ab;
+    ell1[label="…"];
+    ø -- ell1;
+    a -- ac;
+    a -- ad;
+    ac -- ell3;
+    ad -- ell4;
+    ab -- abc;
+    ab -- abd;
+    abc -- abcd;
+    abd -- abdc;
+
+    ao[label="a",color=red,penwidth=3.0];
+    bo[label="b",color=red,penwidth=3.0];
+    co[label="c",color=red,penwidth=3.0];
+    do[label="d"];
+    ao -- bo[label=" 2 ",color=red,penwidth=3.0, dir=forward];
+    bo -- co[label=" 2 ",color=red,penwidth=3.0, dir=forward];
+    co -- ao[label=" 2 "];
+    do -- ao[label=" 2 "];
+    do -- bo[label=" 2 "];
+    do -- co[label=" 2 "];
+}
