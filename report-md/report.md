@@ -1,4 +1,4 @@
-Solving the Travelling Salesman with A*
+Solving the Travelling Salesman with A\*
 =======================================
 
 Modeling the problem
@@ -26,3 +26,5 @@ And, for example, after taking the A → B → C path, we'll have:
 
 Implementing the data structures
 --------------------------------
+
+# Bibliography
