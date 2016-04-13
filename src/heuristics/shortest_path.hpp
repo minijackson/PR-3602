@@ -13,7 +13,7 @@ namespace awesome {
 	public:
 		ShortestPathHeuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap);
 
-		int operator()(int node) override;
+		int operator()(std::string node) override;
 
 	protected:
 	private:
