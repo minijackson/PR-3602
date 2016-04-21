@@ -1,9 +1,9 @@
 #ifndef PSG_HPP
 #define PSG_HPP
 
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/labeled_graph.hpp>
+#include "graph.hpp"
+
+#include <vector>
 
 namespace awesome {
 
@@ -12,23 +12,16 @@ namespace awesome {
 	 * Detailed description
 	 */
 	class PSG {
-		using EdgeWeightProperty = boost::property<boost::edge_weight_t, int>;
+		using Graph = graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>;
+		using GraphNode =
+		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::Node_t;
+		using GraphConstNode =
+		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::ConstNode_t;
 
-		using Graph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
-		                                                         boost::vecS,
-		                                                         boost::directedS,
-		                                                         boost::no_property,
-		                                                         EdgeWeightProperty>,
-		                                   std::string>;
-		using VertexIt = boost::graph_traits<Graph>::vertex_iterator;
-
-		using MapGraph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
-		                                                            boost::vecS,
-		                                                            boost::directedS,
-		                                                            boost::no_property,
-		                                                            EdgeWeightProperty>,
-		                                      std::string>;
-		using MapGraphVertexIt = boost::graph_traits<MapGraph>::vertex_iterator;
+		using MapGraph     = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>;
+		using MapGraphNode = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::Node_t;
+		using MapGraphConstNode =
+		        graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::ConstNode_t;
 
 	public:
 		/*! \brief PSG description
@@ -39,6 +32,14 @@ namespace awesome {
 		 */
 		explicit PSG(MapGraph map);
 
+		/*! \brief develop description
+		 *
+		 * Detailed description
+		 *
+		 * \param node argument description
+		 */
+		void develop(std::string node);
+
 	protected:
 		/*! \brief psg description
 		 */
@@ -47,6 +48,10 @@ namespace awesome {
 		/*! \brief map description
 		 */
 		MapGraph map;
+
+		std::vector<std::string> openNodes;
+
+		std::vector<std::string> closedNodes;
 	};
 }
 
