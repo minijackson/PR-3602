@@ -1,37 +1,23 @@
 #ifndef HEURISTIC_HPP
 #define HEURISTIC_HPP
 
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/labeled_graph.hpp>
+#include "graph.hpp"
 
 namespace awesome {
-	/*! \brief Heuristic description
-	 *
-	 * Detailed description
-	 */
+
 	class Heuristic {
-	protected:
-		using EdgeWeightProperty = boost::property<boost::edge_weight_t, int>;
-
 	public:
-		using Graph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
-		                                                         boost::vecS,
-		                                                         boost::directedS,
-		                                                         boost::no_property,
-		                                                         EdgeWeightProperty>,
-		                                   std::string>;
-		using MapGraph = boost::labeled_graph<boost::adjacency_list<boost::vecS,
-		                                                            boost::vecS,
-		                                                            boost::directedS,
-		                                                            boost::no_property,
-		                                                            EdgeWeightProperty>,
-		                                      std::string>;
+		using Graph = graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>;
+		using GraphNode =
+		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::Node_t;
+		using GraphConstNode =
+		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::ConstNode_t;
 
-		/*! \brief Heuristic description
-		 *
-		 * Detailed description
-		 */
+		using MapGraph     = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>;
+		using MapGraphNode = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::Node_t;
+		using MapGraphConstNode =
+		        graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::ConstNode_t;
+
 		Heuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap);
 
 		virtual int operator()(std::string node) = 0;

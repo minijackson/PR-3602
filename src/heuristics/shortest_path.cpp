@@ -11,16 +11,13 @@ namespace awesome {
 
 		int min = std::numeric_limits<int>::max();
 
-		MapGraph::edge_iterator edgeIt, edgesEndIt;
-		for(boost::tie(edgeIt, edgesEndIt) = boost::edges(degradedMap); edgeIt != edgesEndIt; ++edgeIt) {
+		degradedMap.eachEdges([this, &min](MapGraphConstNode begin, MapGraphConstNode end) {
+			int weight = degradedMap.getEdgeProperty(begin, end).weight;
+			if(weight < min) {
+				min = weight;
+			}
+		});
 
-			int weight = boost::get(boost::edge_weight_t(), degradedMap, *edgeIt);
-			min        = (weight < min) ? weight : min;
-		}
-
-		MapGraph::vertex_iterator verticesBeginIt, verticesEndIt;
-		boost::tie(verticesBeginIt, verticesEndIt) = boost::vertices(degradedMap);
-
-		return min * (std::distance(verticesBeginIt, verticesEndIt) - 1);
+		return min * (degradedMap.getVerticesCount() - 1);
 	}
 }

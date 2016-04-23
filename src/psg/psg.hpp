@@ -3,14 +3,10 @@
 
 #include "graph.hpp"
 
-#include <vector>
+#include <unordered_set>
 
 namespace awesome {
 
-	/*! \brief PSG description
-	 *
-	 * Detailed description
-	 */
 	class PSG {
 		using Graph = graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>;
 		using GraphNode =
@@ -24,34 +20,20 @@ namespace awesome {
 		        graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::ConstNode_t;
 
 	public:
-		/*! \brief PSG description
-		 *
-		 * Detailed description
-		 *
-		 * \param map argument description
-		 */
 		explicit PSG(MapGraph map);
 
-		/*! \brief develop description
-		 *
-		 * Detailed description
-		 *
-		 * \param node argument description
-		 */
-		void develop(std::string node);
+		void develop(std::string nodeName);
 
 	protected:
-		/*! \brief psg description
-		 */
 		Graph psg;
 
-		/*! \brief map description
-		 */
 		MapGraph map;
 
-		std::vector<std::string> openNodes;
+		MapGraph degradedMap;
 
-		std::vector<std::string> closedNodes;
+		std::unordered_set<std::string> openNodes;
+
+		std::unordered_set<std::string> closedNodes;
 	};
 }
 

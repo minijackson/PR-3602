@@ -5,12 +5,12 @@ libmapgen = shared_library('mapgen', 'mapgen/mapgen.cpp')
 mapgen_test = executable('mapgen_test', 'mapgen_test.cpp',
 	include_directories: salesman_awesome_inc,
 	link_with: [libsalesman_awesome, libmapgen],
-	dependencies: boost_testing)
+	dependencies: [boost_testing, graph_dep])
 
 heuristics_test = executable('heuristics_test', 'heuristics_test.cpp',
 	include_directories: salesman_awesome_inc,
 	link_with: [libsalesman_awesome, libmapgen],
-	dependencies: boost_testing)
+	dependencies: [boost_testing, graph_dep])
 
 test('MapGen Test', mapgen_test, args: ['-l', 'test_suite'])
 test('Heuristics Test', heuristics_test, args: ['-l', 'test_suite'])
