@@ -1,4 +1,4 @@
-#include "graph.hpp"
+#include "graph/graph.hpp"
 
 #include "heuristics/mst.hpp"
 #include "heuristics/shortest_path.hpp"

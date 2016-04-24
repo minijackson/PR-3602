@@ -1,6 +1,6 @@
 #include "mst.hpp"
 
-#include "algorithms.hpp"
+#include "graph/algorithms.hpp"
 
 #include <boost/graph/prim_minimum_spanning_tree.hpp>
 #include <numeric>

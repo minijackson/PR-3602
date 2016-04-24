@@ -1,7 +1,7 @@
 #ifndef PSG_HPP
 #define PSG_HPP
 
-#include "graph.hpp"
+#include "graph/graph.hpp"
 
 #include <unordered_set>
 

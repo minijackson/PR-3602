@@ -1,7 +1,7 @@
 #ifndef HEURISTIC_HPP
 #define HEURISTIC_HPP
 
-#include "graph.hpp"
+#include "graph/graph.hpp"
 
 namespace awesome {
 
