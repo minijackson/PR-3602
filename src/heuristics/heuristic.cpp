@@ -2,8 +2,7 @@
 
 namespace awesome {
 
-	Heuristic::Heuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap)
+	Heuristic::Heuristic(Graph& psg, MapGraph& map)
 	      : psg(psg)
-	      , map(map)
-	      , degradedMap(degradedMap) {}
+	      , map(map) {}
 }

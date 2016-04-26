@@ -7,34 +7,34 @@
 
 namespace awesome {
 
+	template <typename Heuristic>
 	class PSG {
-		using Graph = graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>;
-		using GraphNode =
-		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::Node_t;
-		using GraphConstNode =
-		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::ConstNode_t;
+		using MapGraph          = graph::list::WeightedGraph;
+		using MapGraphNode      = MapGraph::Node_t;
+		using MapGraphConstNode = MapGraph::ConstNode_t;
 
-		using MapGraph     = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>;
-		using MapGraphNode = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::Node_t;
-		using MapGraphConstNode =
-		        graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::ConstNode_t;
+		using Graph          = graph::list::AstarGraph<MapGraph>;
+		using GraphNode      = Graph::Node_t;
+		using GraphConstNode = Graph::ConstNode_t;
 
 	public:
 		explicit PSG(MapGraph map);
 
-		void develop(std::string nodeName);
+		void develop(GraphConstNode nodeName);
 
 	protected:
 		Graph psg;
 
 		MapGraph map;
 
-		MapGraph degradedMap;
-
 		std::unordered_set<std::string> openNodes;
 
 		std::unordered_set<std::string> closedNodes;
+
+		Heuristic heuristic;
 	};
 }
+
+#include "psg.tcc"
 
 #endif

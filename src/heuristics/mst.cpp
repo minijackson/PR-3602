@@ -8,11 +8,11 @@
 
 namespace awesome {
 
-	MSTHeuristic::MSTHeuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap)
-	      : Heuristic(psg, map, degradedMap) {}
+	MSTHeuristic::MSTHeuristic(Graph& psg, MapGraph& map)
+	      : Heuristic(psg, map) {}
 
-	int MSTHeuristic::operator()(std::string node) {
-		MapGraph undirectedMap = graph::undirected(degradedMap);
+	int MSTHeuristic::operator()(MapGraph const& state, GraphConstNode) {
+		MapGraph undirectedMap = graph::undirected(state);
 		MapGraph mst = graph::minimumSpanningTree(undirectedMap, undirectedMap.begin());
 
 		size_t sum = 0;

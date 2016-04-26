@@ -4,20 +4,20 @@
 
 namespace awesome {
 
-	ShortestPathHeuristic::ShortestPathHeuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap)
-	      : Heuristic(psg, map, degradedMap) {}
+	ShortestPathHeuristic::ShortestPathHeuristic(Graph& psg, MapGraph& map)
+	      : Heuristic(psg, map) {}
 
-	int ShortestPathHeuristic::operator()(std::string node) {
+	int ShortestPathHeuristic::operator()(MapGraph const& state, GraphConstNode) {
 
 		int min = std::numeric_limits<int>::max();
 
-		degradedMap.eachEdges([this, &min](MapGraphConstNode begin, MapGraphConstNode end) {
-			int weight = degradedMap.getEdgeProperty(begin, end).weight;
+		state.eachEdges([this, &state, &min](MapGraphConstNode begin, MapGraphConstNode end) {
+			int weight = state.getEdgeProperty(begin, end).weight;
 			if(weight < min) {
 				min = weight;
 			}
 		});
 
-		return min * (degradedMap.getVerticesCount() - 1);
+		return min * (state.getVerticesCount() - 1);
 	}
 }

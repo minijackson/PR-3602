@@ -15,9 +15,9 @@ namespace awesome {
 		 *
 		 * Detailed description
 		 */
-		MSTHeuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap);
+		MSTHeuristic(Graph& psg, MapGraph& map);
 
-		int operator()(std::string node) override;
+		int operator()(MapGraph const& state, GraphConstNode node) override;
 	protected:
 	private:
 	};

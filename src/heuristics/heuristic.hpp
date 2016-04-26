@@ -7,27 +7,23 @@ namespace awesome {
 
 	class Heuristic {
 	public:
-		using Graph = graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>;
-		using GraphNode =
-		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::Node_t;
-		using GraphConstNode =
-		        graph::list::Graph<graph::AstarNodeProperty, graph::WeightedProperty>::ConstNode_t;
+		using MapGraph          = graph::list::WeightedGraph;
+		using MapGraphNode      = MapGraph::Node_t;
+		using MapGraphConstNode = MapGraph::ConstNode_t;
 
-		using MapGraph     = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>;
-		using MapGraphNode = graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::Node_t;
-		using MapGraphConstNode =
-		        graph::list::Graph<graph::NoProperty, graph::WeightedProperty>::ConstNode_t;
+		using Graph          = graph::list::AstarGraph<MapGraph>;
+		using GraphNode      = Graph::Node_t;
+		using GraphConstNode = Graph::ConstNode_t;
 
-		Heuristic(Graph& psg, MapGraph& map, MapGraph& degradedMap);
+		Heuristic(Graph& psg, MapGraph& map);
 
-		virtual int operator()(std::string node) = 0;
+		virtual int operator()(MapGraph const& state, GraphConstNode node) = 0;
 
 	protected:
 		virtual ~Heuristic() = default;
 
 		Graph& psg;
 		MapGraph& map;
-		MapGraph& degradedMap;
 	};
 }
 

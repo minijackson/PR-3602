@@ -40,12 +40,12 @@ BOOST_AUTO_TEST_CASE(heuristics_shortest_path_basic) {
 	awesome::ShortestPathHeuristic::Graph psg;
 	auto degradedMap = map;
 
-	awesome::ShortestPathHeuristic heur(psg, map, degradedMap);
-	BOOST_CHECK_EQUAL(heur("0"), 4);
+	awesome::ShortestPathHeuristic heur(psg, map);
+	BOOST_CHECK_EQUAL(heur(degradedMap, psg["0"]), 4);
 
 	degradedMap.removeNode(degradedMap["0"]);
 
-	BOOST_CHECK_EQUAL(heur("1"), 3);
+	BOOST_CHECK_EQUAL(heur(degradedMap, psg["1"]), 3);
 }
 
 BOOST_AUTO_TEST_CASE(heuristics_mst_basic) {
@@ -80,10 +80,10 @@ BOOST_AUTO_TEST_CASE(heuristics_mst_basic) {
 	awesome::MSTHeuristic::Graph psg;
 	auto degradedMap = map;
 
-	awesome::MSTHeuristic heur(psg, map, degradedMap);
-	BOOST_CHECK_EQUAL(heur("0"), 6);
+	awesome::MSTHeuristic heur(psg, map);
+	BOOST_CHECK_EQUAL(heur(degradedMap, psg["0"]), 6);
 
 	degradedMap.removeNode(degradedMap["0"]);
 
-	BOOST_CHECK_EQUAL(heur("1"), 6);
+	BOOST_CHECK_EQUAL(heur(degradedMap, psg["1"]), 6);
 }
