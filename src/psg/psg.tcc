@@ -59,8 +59,8 @@ namespace awesome {
 	void PSG<Heuristic>::develop(GraphConstNode node) {
 
 		std::string nodeName = node.getName();
-		auto openSetNodeIt = openNodes.find(node);
-		if(!isDeveloped(node)) {
+		auto openSetNodeIt = findInOpenNodes(node);
+		if(openSetNodeIt == openNodes.end()) {
 			if(closedNodes.find(nodeName) == closedNodes.end()) {
 				throw std::out_of_range("Non-existing node: " + nodeName);
 			} else {
@@ -113,15 +113,16 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	bool PSG<Heuristic>::isDeveloped(GraphConstNode node) const {
+	auto PSG<Heuristic>::findInOpenNodes(GraphConstNode node) const ->
+	        typename std::multiset<GraphConstNode, CompareFunc>::iterator {
 		auto range = openNodes.equal_range(node);
 		auto begin = range.first, end = range.second;
-		for(auto it = begin ; it != end ; ++it) {
+		for(auto it = begin; it != end; ++it) {
 			if(*it == node) {
-				return true;
+				return it;
 			}
 		}
-		return false;
+		return openNodes.end();
 	}
 
 	template <typename Heuristic>

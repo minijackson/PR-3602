@@ -25,22 +25,23 @@ namespace awesome {
 		std::list<MapGraphConstNode> goForIt();
 
 	protected:
-		std::list<MapGraphConstNode> finishLine(GraphConstNode goal);
-
-		void develop(GraphConstNode node);
-
-		bool isDeveloped(GraphConstNode node) const;
-
-		bool isGoal(GraphConstNode node) const;
-
-		bool isStart(GraphConstNode node) const;
-
 		struct CompareFunc {
 			bool operator()(GraphConstNode lhs, GraphConstNode rhs) const {
 				return (lhs.getProperty().gScore + lhs.getProperty().hScore) <
 				       (rhs.getProperty().gScore + rhs.getProperty().hScore);
 			}
 		};
+
+		std::list<MapGraphConstNode> finishLine(GraphConstNode goal);
+
+		void develop(GraphConstNode node);
+
+		typename std::multiset<GraphConstNode, CompareFunc>::iterator findInOpenNodes(
+		        GraphConstNode node) const;
+
+		bool isGoal(GraphConstNode node) const;
+
+		bool isStart(GraphConstNode node) const;
 
 		Graph psg;
 
