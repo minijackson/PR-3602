@@ -3,12 +3,15 @@
 
 #include "graph/graph.hpp"
 
+#include <list>
+#include <set>
 #include <unordered_set>
 
 namespace awesome {
 
 	template <typename Heuristic>
 	class PSG {
+	public:
 		using MapGraph          = graph::list::WeightedGraph;
 		using MapGraphNode      = MapGraph::Node_t;
 		using MapGraphConstNode = MapGraph::ConstNode_t;
@@ -17,17 +20,33 @@ namespace awesome {
 		using GraphNode      = Graph::Node_t;
 		using GraphConstNode = Graph::ConstNode_t;
 
-	public:
-		explicit PSG(MapGraph map);
+		explicit PSG(MapGraph const& map);
 
-		void develop(GraphConstNode nodeName);
+		std::list<MapGraphConstNode> goForIt();
 
 	protected:
+		std::list<MapGraphConstNode> finishLine(GraphConstNode goal);
+
+		void develop(GraphConstNode node);
+
+		bool isDeveloped(GraphConstNode node) const;
+
+		bool isGoal(GraphConstNode node) const;
+
+		bool isStart(GraphConstNode node) const;
+
+		struct CompareFunc {
+			bool operator()(GraphConstNode lhs, GraphConstNode rhs) const {
+				return (lhs.getProperty().gScore + lhs.getProperty().hScore) <
+				       (rhs.getProperty().gScore + rhs.getProperty().hScore);
+			}
+		};
+
 		Graph psg;
 
-		MapGraph map;
+		MapGraph const& map;
 
-		std::unordered_set<std::string> openNodes;
+		std::multiset<GraphConstNode, CompareFunc> openNodes;
 
 		std::unordered_set<std::string> closedNodes;
 

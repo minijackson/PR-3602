@@ -3,11 +3,12 @@
 #include "psg.hpp"
 
 #include <algorithm>
+#include <sstream>
 
 namespace awesome {
 
 	template <typename Heuristic>
-	PSG<Heuristic>::PSG(MapGraph map)
+	PSG<Heuristic>::PSG(MapGraph const& map)
 	      : psg()
 	      , map(map)
 	      , heuristic(psg, map) {
@@ -22,17 +23,44 @@ namespace awesome {
 			                           /* hScore = */ heuristic(map, psg[townName]),
 			                           /* parent = */ "-1",
 			                           /* state = */ map});
-			openNodes.insert(townName);
+			openNodes.insert(psg[townName]);
 		});
 
 		closedNodes.insert("-1");
 	}
 
 	template <typename Heuristic>
+	auto PSG<Heuristic>::goForIt() -> std::list<MapGraphConstNode> {
+		while(openNodes.size() != 0) {
+			GraphConstNode currentNode = *openNodes.begin();
+
+			if(isGoal(currentNode)) {
+				return finishLine(std::move(currentNode));
+			}
+
+			develop(currentNode);
+		}
+		throw std::logic_error("Something went wrong. Sorry.");
+	}
+
+	template <typename Heuristic>
+	auto PSG<Heuristic>::finishLine(GraphConstNode goal) -> std::list<MapGraphConstNode> {
+		std::istringstream towns(goal.getName());
+
+		std::list<MapGraphConstNode> travelerPath;
+
+		for(std::string town; std::getline(towns, town, ',');) {
+			travelerPath.push_back(map[town]);
+		}
+		return travelerPath;
+	}
+
+	template <typename Heuristic>
 	void PSG<Heuristic>::develop(GraphConstNode node) {
+
 		std::string nodeName = node.getName();
-		auto openSetNodeIt = openNodes.find(nodeName);
-		if(openSetNodeIt == openNodes.end()) {
+		auto openSetNodeIt = openNodes.find(node);
+		if(!isDeveloped(node)) {
 			if(closedNodes.find(nodeName) == closedNodes.end()) {
 				throw std::out_of_range("Non-existing node: " + nodeName);
 			} else {
@@ -41,40 +69,74 @@ namespace awesome {
 		}
 
 		MapGraph const& state = node.getProperty().state;
-		std::string currentTownName = nodeName.substr(nodeName.rfind(", "));
 
-		state.eachAdjacents(
-		        state[currentTownName],
-		        [ this, &state, & PSGparentNode = node, currentTownName ](
-		                MapGraphConstNode newTown) {
+		std::string::size_type commaPos = nodeName.rfind(",");
+		std::string currentTownName;
+		if(commaPos == std::string::npos) {
+			currentTownName = nodeName;
+		} else {
+			currentTownName = nodeName.substr(commaPos + 1);
+		}
 
-			        std::string PSGparentNodeName = PSGparentNode.getName();
-			        std::string newTownName       = newTown.getName();
+		state.eachAdjacents(state[currentTownName],
+		                    [ this, &state, & psgParentNode = node, currentTownName ](
+		                            MapGraphConstNode newTown) {
 
-			        if(closedNodes.count(newTownName) != 0) {
-				        return;
-			        }
+			                    std::string psgParentNodeName = psgParentNode.getName();
+			                    std::string newTownName       = newTown.getName();
 
-			        if(openNodes.count(newTownName) == 0) {
-				        std::string PSGNewNodeName = PSGparentNodeName + ", " + newTownName;
-						MapGraphConstNode currentTown = state[currentTownName];
+			                    std::string psgNewNodeName    = psgParentNodeName + "," + newTownName;
+			                    GraphConstNode psgNewNode     = psg[psgNewNodeName];
+			                    MapGraphConstNode currentTown = state[currentTownName];
 
-				        openNodes.insert(newTownName);
-				        psg.addEdges({PSGparentNodeName, PSGNewNodeName});
+			                    psg.addEdges({psgParentNodeName, psgNewNodeName});
+			                    psg.setEdgeProperty(psgParentNode,
+			                                        psgNewNode,
+			                                        state.getEdgeProperty(currentTown, newTown));
 
-						MapGraph newState = state;
-						newState.removeNode(newState[currentTownName]);
+			                    MapGraph newState = state;
+			                    if(!isStart(psgParentNode)) {
+				                    newState.removeNode(newState[currentTownName]);
+			                    }
 
-				        psg[PSGNewNodeName].setProperty(
-				                {/* gScore = */ PSGparentNode.getProperty().gScore +
-				                         state.getEdgeProperty(currentTown, newTown).weight,
-				                 /* hScore = */ heuristic(newState, psg[PSGNewNodeName]),
-				                 /* parent = */ PSGparentNodeName,
-				                 /* state = */ newState});
-			        }
-			    });
+			                    psg[psgNewNodeName].setProperty(
+			                            {/* gScore = */ psgParentNode.getProperty().gScore +
+			                                     state.getEdgeProperty(currentTown, newTown).weight,
+			                             /* hScore = */ heuristic(newState, psgNewNode),
+			                             /* parent = */ psgParentNodeName,
+			                             /* state = */ newState});
+			                    openNodes.insert(psgNewNode);
+			                });
 
 		openNodes.erase(openSetNodeIt);
 		closedNodes.insert(nodeName);
+	}
+
+	template <typename Heuristic>
+	bool PSG<Heuristic>::isDeveloped(GraphConstNode node) const {
+		auto range = openNodes.equal_range(node);
+		auto begin = range.first, end = range.second;
+		for(auto it = begin ; it != end ; ++it) {
+			if(*it == node) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template <typename Heuristic>
+	bool PSG<Heuristic>::isGoal(GraphConstNode node) const {
+		std::istringstream towns(node.getName());
+
+		size_t sum = 0;
+		for(std::string town; std::getline(towns, town, ',');) {
+			++sum;
+		}
+		return sum == (map.getVerticesCount() + 1);
+	}
+
+	template <typename Heuristic>
+	bool PSG<Heuristic>::isStart(GraphConstNode node) const {
+		return node.getName().find(",") == std::string::npos;
 	}
 }

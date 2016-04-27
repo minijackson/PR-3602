@@ -8,7 +8,7 @@
 
 namespace awesome {
 
-	MSTHeuristic::MSTHeuristic(Graph& psg, MapGraph& map)
+	MSTHeuristic::MSTHeuristic(Graph const& psg, MapGraph const& map)
 	      : Heuristic(psg, map) {}
 
 	int MSTHeuristic::operator()(MapGraph const& state, GraphConstNode) {

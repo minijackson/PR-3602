@@ -2,7 +2,7 @@
 
 namespace awesome {
 
-	Heuristic::Heuristic(Graph& psg, MapGraph& map)
+	Heuristic::Heuristic(Graph const& psg, MapGraph const& map)
 	      : psg(psg)
 	      , map(map) {}
 }

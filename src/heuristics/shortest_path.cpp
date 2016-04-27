@@ -4,7 +4,7 @@
 
 namespace awesome {
 
-	ShortestPathHeuristic::ShortestPathHeuristic(Graph& psg, MapGraph& map)
+	ShortestPathHeuristic::ShortestPathHeuristic(Graph const& psg, MapGraph const& map)
 	      : Heuristic(psg, map) {}
 
 	int ShortestPathHeuristic::operator()(MapGraph const& state, GraphConstNode) {

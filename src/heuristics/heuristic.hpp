@@ -15,15 +15,15 @@ namespace awesome {
 		using GraphNode      = Graph::Node_t;
 		using GraphConstNode = Graph::ConstNode_t;
 
-		Heuristic(Graph& psg, MapGraph& map);
+		Heuristic(Graph const& psg, MapGraph const& map);
 
 		virtual int operator()(MapGraph const& state, GraphConstNode node) = 0;
 
 	protected:
 		virtual ~Heuristic() = default;
 
-		Graph& psg;
-		MapGraph& map;
+		Graph const& psg;
+		MapGraph const& map;
 	};
 }
 
