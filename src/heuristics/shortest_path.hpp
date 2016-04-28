@@ -1,5 +1,4 @@
-#ifndef SHORTEST_PATH_HPP
-#define SHORTEST_PATH_HPP
+#pragma once
 
 #include "heuristic.hpp"
 
@@ -19,5 +18,3 @@ namespace awesome {
 	private:
 	};
 }
-
-#endif

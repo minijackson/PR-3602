@@ -1,5 +1,4 @@
-#ifndef PSG_HPP
-#define PSG_HPP
+#pragma once
 
 #include "graph/graph.hpp"
 
@@ -10,7 +9,7 @@
 namespace awesome {
 
 	template <typename Heuristic>
-	class PSG {
+	class TSPSolver {
 	public:
 		using MapGraph          = graph::list::WeightedGraph;
 		using MapGraphNode      = MapGraph::Node_t;
@@ -20,7 +19,7 @@ namespace awesome {
 		using GraphNode      = Graph::Node_t;
 		using GraphConstNode = Graph::ConstNode_t;
 
-		explicit PSG(MapGraph const& map);
+		explicit TSPSolver(MapGraph const& map);
 
 		std::list<MapGraphConstNode> goForIt();
 
@@ -55,6 +54,4 @@ namespace awesome {
 	};
 }
 
-#include "psg.tcc"
-
-#endif
+#include "tspsolver.tcc"

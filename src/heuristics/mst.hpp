@@ -1,5 +1,4 @@
-#ifndef MST_HPP
-#define MST_HPP
+#pragma once
 
 #include "heuristic.hpp"
 
@@ -23,5 +22,3 @@ namespace awesome {
 	};
 
 }
-
-#endif

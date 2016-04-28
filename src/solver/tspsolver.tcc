@@ -1,6 +1,6 @@
 #pragma once
 
-#include "psg.hpp"
+#include "tspsolver.hpp"
 
 #include <algorithm>
 #include <sstream>
@@ -8,7 +8,7 @@
 namespace awesome {
 
 	template <typename Heuristic>
-	PSG<Heuristic>::PSG(MapGraph const& map)
+	TSPSolver<Heuristic>::TSPSolver(MapGraph const& map)
 	      : psg()
 	      , map(map)
 	      , heuristic(psg, map) {
@@ -30,7 +30,7 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	auto PSG<Heuristic>::goForIt() -> std::list<MapGraphConstNode> {
+	auto TSPSolver<Heuristic>::goForIt() -> std::list<MapGraphConstNode> {
 		while(openNodes.size() != 0) {
 			GraphConstNode currentNode = *openNodes.begin();
 
@@ -44,7 +44,7 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	auto PSG<Heuristic>::finishLine(GraphConstNode goal) -> std::list<MapGraphConstNode> {
+	auto TSPSolver<Heuristic>::finishLine(GraphConstNode goal) -> std::list<MapGraphConstNode> {
 		std::istringstream towns(goal.getName());
 
 		std::list<MapGraphConstNode> travelerPath;
@@ -56,7 +56,7 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	void PSG<Heuristic>::develop(GraphConstNode node) {
+	void TSPSolver<Heuristic>::develop(GraphConstNode node) {
 
 		std::string nodeName = node.getName();
 		auto openSetNodeIt = findInOpenNodes(node);
@@ -113,7 +113,7 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	auto PSG<Heuristic>::findInOpenNodes(GraphConstNode node) const ->
+	auto TSPSolver<Heuristic>::findInOpenNodes(GraphConstNode node) const ->
 	        typename std::multiset<GraphConstNode, CompareFunc>::iterator {
 		auto range = openNodes.equal_range(node);
 		auto begin = range.first, end = range.second;
@@ -126,7 +126,7 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	bool PSG<Heuristic>::isGoal(GraphConstNode node) const {
+	bool TSPSolver<Heuristic>::isGoal(GraphConstNode node) const {
 		std::istringstream towns(node.getName());
 
 		size_t sum = 0;
@@ -137,7 +137,7 @@ namespace awesome {
 	}
 
 	template <typename Heuristic>
-	bool PSG<Heuristic>::isStart(GraphConstNode node) const {
+	bool TSPSolver<Heuristic>::isStart(GraphConstNode node) const {
 		return node.getName().find(",") == std::string::npos;
 	}
 }

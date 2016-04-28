@@ -1,4 +1,4 @@
-#include "psg/psg.hpp"
+#include "solver/tspsolver.hpp"
 #include "heuristics/shortest_path.hpp"
 
 #include <iostream>
@@ -9,8 +9,8 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(everything_mst) {
-	using PSG = awesome::PSG<awesome::ShortestPathHeuristic>;
-	using MapGraph = PSG::MapGraph;
+	using TSPSolver = awesome::TSPSolver<awesome::ShortestPathHeuristic>;
+	using MapGraph = TSPSolver::MapGraph;
 	using ConstNode = MapGraph::ConstNode_t;
 
 	MapGraph map;
@@ -27,9 +27,9 @@ BOOST_AUTO_TEST_CASE(everything_mst) {
 	map.connect(map["d"], map["e"], {1});
 	map.connect(map["e"], map["a"], {1});
 
-	PSG psg(map);
+	TSPSolver solver(map);
 
 	std::list<ConstNode> candidate{map["a"], map["b"], map["c"], map["d"], map["e"], map["a"]};
 
-	BOOST_CHECK(psg.goForIt() == candidate);
+	BOOST_CHECK(solver.goForIt() == candidate);
 }

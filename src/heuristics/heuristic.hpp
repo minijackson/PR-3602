@@ -1,5 +1,4 @@
-#ifndef HEURISTIC_HPP
-#define HEURISTIC_HPP
+#pragma once
 
 #include "graph/graph.hpp"
 
@@ -26,5 +25,3 @@ namespace awesome {
 		MapGraph const& map;
 	};
 }
-
-#endif
