@@ -12,11 +12,11 @@ mapgen_test = executable('mapgen_test', 'mapgen_test.cpp',
 	link_with: [libsalesman_awesome, libmapgen],
 	dependencies: [boost_testing, graph_dep])
 
-psg_test = executable('psg_test', 'psg_test.cpp',
+solver_test = executable('solver_test', 'solver_test.cpp',
 	include_directories: salesman_awesome_inc,
 	link_with: [libsalesman_awesome, libmapgen],
 	dependencies: [boost_testing, graph_dep])
 
 test('Heuristics Test', heuristics_test, args: ['-l', 'test_suite'])
 test('MapGen Test', mapgen_test, args: ['-l', 'test_suite'])
-test('PSG Test', psg_test, args: ['-l', 'test_suite'])
+test('Solver Test', solver_test, args: ['-l', 'test_suite'])
