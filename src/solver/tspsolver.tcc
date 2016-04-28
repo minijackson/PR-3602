@@ -127,13 +127,7 @@ namespace awesome {
 
 	template <typename Heuristic>
 	bool TSPSolver<Heuristic>::isGoal(GraphConstNode node) const {
-		std::istringstream towns(node.getName());
-
-		size_t sum = 0;
-		for(std::string town; std::getline(towns, town, ',');) {
-			++sum;
-		}
-		return sum == (map.getVerticesCount() + 1);
+		return node.getProperty().state.getVerticesCount() == 1;
 	}
 
 	template <typename Heuristic>
