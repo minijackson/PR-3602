@@ -76,6 +76,6 @@ namespace awesome {
 			}
 		}
 
-		return graph::symmetric(map);
+		return graph::undirected(map);
 	}
 }

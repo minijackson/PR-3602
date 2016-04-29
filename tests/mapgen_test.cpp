@@ -72,6 +72,7 @@ BOOST_AUTO_TEST_CASE(mapgen_random) {
 	MapGen::MapGraph map = MapGen::random(10);
 
 	BOOST_CHECK_EQUAL(map.getVerticesCount(), 10);
-	// n(n-1)/2 = 45
-	BOOST_CHECK_EQUAL(map.getEdgesCount(), 45);
+	// 2×n(n-1)/2 = 90
+	// ×2 because we store it as a directed graph
+	BOOST_CHECK_EQUAL(map.getEdgesCount(), 90);
 }
