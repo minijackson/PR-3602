@@ -105,7 +105,11 @@ namespace awesome {
 			                             /* hScore = */ heuristic(newState, psgNewNode),
 			                             /* parent = */ psgParentNodeName,
 			                             /* state = */ newState});
-			                    openNodes.insert(psgNewNode);
+
+								if(!isFailure(psgNewNode) || isGoal(psgNewNode)) {
+									openNodes.insert(psgNewNode);
+								}
+
 			                });
 
 		openNodes.erase(openSetNodeIt);
@@ -128,6 +132,23 @@ namespace awesome {
 	template <typename Heuristic>
 	bool TSPSolver<Heuristic>::isGoal(GraphConstNode node) const {
 		return node.getProperty().state.getVerticesCount() == 1;
+	}
+
+	template <typename Heuristic>
+	bool TSPSolver<Heuristic>::isFailure(GraphConstNode node) const {
+		std::istringstream stream(node.getName());
+		std::set<std::string> townNames;
+
+		std::string townName;
+
+		while(std::getline(stream, townName, ',')) {
+			if(townNames.count(townName) > 0) {
+				return true;
+			}
+
+			townNames.insert(townName);
+		}
+		return false;
 	}
 
 	template <typename Heuristic>

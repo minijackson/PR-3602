@@ -1,6 +1,6 @@
 boost_testing = dependency('boost', modules: 'test')
 
-libmapgen = shared_library('mapgen', 'mapgen/mapgen.cpp')
+libmapgen = shared_library('mapgen', 'mapgen/mapgen.cpp', dependencies: graph_dep)
 
 heuristics_test = executable('heuristics_test', 'heuristics_test.cpp',
 	include_directories: salesman_awesome_inc,

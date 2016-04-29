@@ -40,6 +40,8 @@ namespace awesome {
 
 		bool isGoal(GraphConstNode node) const;
 
+		bool isFailure(GraphConstNode node) const;
+
 		bool isStart(GraphConstNode node) const;
 
 		Graph psg;
