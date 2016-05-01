@@ -1,0 +1,8 @@
+graph {
+    a -- b[label=" 2 "];
+    b -- c[label=" 2 "];
+    c -- a[label=" 2 "];
+    d -- a[label=" 2 "];
+    d -- b[label=" 2 "];
+    d -- c[label=" 2 "];
+}
