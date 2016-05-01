@@ -13,6 +13,7 @@
 \usepackage{csquotes}
 \usepackage{url}
 \usepackage[backend=biber]{biblatex}
+\usepackage{marvosym}
 
 \usepackage{tikz}
 \usepackage{fontspec}
@@ -293,15 +294,74 @@ spécialement pour l'occasion, que nous avons appelé \texttt{graph}, reflétant
 notre nature d'adolescent engloutis par la société de consommation, délaissé
 sans aucune originalité propre.
 
-\paragraph{} Enfin, la plus grosse et donc la plus horrible des
-refactorisations a été de permettre de pouvoir stocker des valeurs d'un types
-arbitraires pour chaque sommet et pour chaque arc. Il a donc fallu rajouter un
-double template aux classes \texttt{Graph}. Nous avons choisi de stocker ce que
-l'on appellera les propriétés dans un vecteur pour les sommets, et dans une map
-ayant pour clef une paire d'identifiant dans le cas des arcs. Il a fallu
-ensuite concevoir une interface digne de ce nom. Nous avons aussi fournis des
-structures pour des graphes avec des fonctionnalités basiques, comme un poids
-ou, comme par hasard, des propriétés propre à l'A* ($g(n)$, $h(n)$).
+\paragraph{} Ensuite viens la plus grosse et donc la plus horrible des
+refactorisations qui a été de permettre de pouvoir stocker des valeurs d'un
+types arbitraires pour chaque sommet et pour chaque arc. Il a donc fallu
+rajouter un double template aux classes \texttt{Graph}. Nous avons choisi de
+stocker ce que l'on appellera les propriétés dans un vecteur pour les sommets,
+et dans une map ayant pour clef une paire d'identifiant dans le cas des arcs.
+Il a fallu ensuite concevoir une interface digne de ce nom. Nous avons aussi
+fournis des structures pour des graphes avec des fonctionnalités basiques,
+comme un poids ou, comme par hasard, des propriétés propre à l'A* ($g(n)$,
+$h(n)$).
+
+\paragraph{} Enfin, il a fallu permettre d'utiliser les Graphes avec des
+chaînes de caractères pour que cela soit plus clair pour le nom des villes. Il
+a donc été nécessaire de remplacer l'utilisation d'identifiant, qui possédaient
+le type \mintinline{cpp}{size_t}, par des \mintinline{cpp}{std::string}. Ça a
+été le cas par exemple pour la map des propriétés des arcs.
+
+\subsection{Trucs sympa}
+
+\paragraph{} Même s'il y a eu beaucoup de refactorisation et beaucoup de
+messages d'erreurs incompréhensibles (ce qui est quasiment la philosophie du
+C++), il y avait quand même du bon dans ce sous-projet. En voici un top trois:
+
+\subsubsection{3\ieme{} place}
+
+\paragraph{} Les tests unitaires couvrent 97.8\% de la base de code!  {\huge
+	\Smiley{}}
+
+\subsubsection{2\ieme{} place}
+
+\paragraph{} Il est possible d'afficher n'importe quel graphe sous la forme de
+digraph Graphviz. De plus, si les arcs sont pondérés, le poids s'affiche à côté
+des arcs.
+
+\subsubsection{1\iere{} place}
+
+\paragraph{} Il est possible de créer un Graphe directement en décrivant ses
+arcs avec leur(s) propriété(s). Cela a nécessité d'outrepasser le fait que le
+constructeur d'un tuple ayant pour paramètre une
+\mintinline{cpp}{std::initializer_list} est explicite, pour pouvoir remplacer
+ceci:
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+Graph myGraph{
+	std::make_tuple("Paris", "New-York", WeightedProperty{3}),
+	std::make_tuple("New-York", "Paris", WeightedProperty{3}),
+	std::make_tuple("Houilles", "Noisy-Champs", WeightedProperty{13}),
+	std::make_tuple("Noisy-Champs", "Houilles", WeightedProperty{13})
+};
+\end{minted}
+\caption{Beuh}
+\label{tsp:beuh}
+\end{listing}
+
+Par ceci:
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+Graph myGraph{{"Paris", "New-York", {3}},
+              {"New-York", "Paris", {3}},
+              {"Houilles", "Noisy-Champs", {13}},
+              {"Noisy-Champs", "Houilles", {13}}};
+\end{minted}
+\caption{Beaucoup mieux!}
+\label{tsp:better}
+\end{listing}
+
 
 \part{Implémentation de l'algorithme}
 
@@ -310,7 +370,9 @@ contre-culture.
 
 \part{Tests}
 
-\part{Jouer à Hercule Poirot}
+\part{Jouons à Hercule Poirot}
+
+\part{Pour aller plus loin}
 
 \printbibliography%
 
