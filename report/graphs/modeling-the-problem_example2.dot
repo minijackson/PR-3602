@@ -2,17 +2,17 @@ graph g {
     ell3[label="…"];
     ell4[label="…"];
     abc[color=red,penwidth=3.0];
-    ø -- a -- ab;
+    ø -- a -- ab [label=2,dir=forward];
     ell1[label="…"];
-    ø -- ell1;
-    a -- ac;
-    a -- ad;
-    ac -- ell3;
-    ad -- ell4;
-    ab -- abc;
-    ab -- abd;
-    abc -- abcd;
-    abd -- abdc;
+    ø -- ell1 [label=2,dir=forward];
+    a -- ac [label=2,dir=forward];
+    a -- ad [label=2,dir=forward];
+    ac -- ell3 [label=2,dir=forward];
+    ad -- ell4 [label=2,dir=forward];
+    ab -- abc [label=2,dir=forward];
+    ab -- abd [label=2,dir=forward];
+    abc -- abcd [label=2,dir=forward];
+    abd -- abdc [label=2,dir=forward];
 
     ao[label="a",color=red,penwidth=3.0];
     bo[label="b",color=red,penwidth=3.0];

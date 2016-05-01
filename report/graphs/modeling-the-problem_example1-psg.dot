@@ -1,24 +1,24 @@
-graph {
+digraph {
     ell1[label="…"];
     ell2[label="…"];
     ell3[label="…"];
     ell4[label="…"];
-    ø -- a;
-    ø -- b;
-    ø -- c;
-    ø -- d;
-    a -- ab;
-    a -- ac;
-    a -- ad;
-    b -- ell1;
-    c -- ell2;
-    d -- da;
-    d -- db;
-    d -- dc;
-    ac -- ell3;
-    ad -- ell4;
-    ab -- abc;
-    ab -- abd;
-    abc -- abcd;
-    abd -- abdc;
+    ø -> a [label=2];
+    ø -> b [label=2];
+    ø -> c [label=2];
+    ø -> d [label=2];
+    a -> ab [label=2];
+    a -> ac [label=2];
+    a -> ad [label=2];
+    b -> ell1 [label=2];
+    c -> ell2 [label=2];
+    d -> da [label=2];
+    d -> db [label=2];
+    d -> dc [label=2];
+    ac -> ell3 [label=2];
+    ad -> ell4 [label=2];
+    ab -> abc [label=2];
+    ab -> abd [label=2];
+    abc -> abcd [label=2];
+    abd -> abdc [label=2];
 }
