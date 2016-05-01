@@ -18,7 +18,7 @@
 \usepackage{fontspec}
 
 \usepackage{minted}
-\usemintedstyle{colorful}
+%\usemintedstyle{colorful}
 
 \usepackage{pdfpages}
 
@@ -238,7 +238,7 @@ projet.
 		\end{minted}
 \end{itemize}
 
-\section{Évolution}
+\section{Évolutions}
 
 \paragraph{} Il ne s'agit pas ici de parler de Pokémon, mais bien de
 l'évolution du projet sur la partie implémentation des structures de graphes.
@@ -250,7 +250,64 @@ Quel dommage\ldots
 de refactorisation du code de ce projet, afin de lui permettre d'être utilisée
 pour faire des ``vrais'' algorithmes par dessus.
 
+\paragraph{} Nous avons d'abords mis certaines fonctions hors des classes car
+elle ne méritaient pas le status de ``méthodes''. Il s'agit surtout
+d'algorithmes qui opèrent sur le graphe, comme le calcul de symétrique ou de
+composantes connexes.
+
+Afin de facilité le portage de ces fonctions et le développement de futurs
+algorithmes, nous avons aussi rajouté des méthodes de parcours de sommets,
+arcs, adjacents. Ces fonctions prennent en paramètre une fonction de rappel,
+autrement appelé \emph{lambda} en C++, ce qui nous permets d'avoir un code
+source clair et très joli à observer. Par exemple, pour l'algorithme du calcul
+du symétrique, cela se résume à 4 lignes et un tiers:
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+Graph symmetric(Graph const& g) {
+	Graph symmetricGraph;
+
+	g.eachEdges([&symmetricGraph, &g](Node begin, Node end) {
+		symmetricGraph.addEdges({end.getId(), begin.getId()});
+	});
+
+	return symmetricGraph;
+}
+\end{minted}
+\caption{Un extrait de code aussi clair que net et précis}
+\label{tsp:symmetric}
+\end{listing}
+
+\paragraph{} L'étape suivante à été de rajouter le type \texttt{ConstNode} qui,
+à l'instar de la class \texttt{Node} permet d'accéder à des méthodes sur les
+sommets uniquement, mais à partir d'un \texttt{Graph} non modifiable
+(\mintinline{cpp}{const}). Pour éviter la duplication de code entre
+\texttt{Node} et \texttt{ConstNode}, la solution choisie a été de créer une
+classe mère \texttt{GenericNode} ayant un template pour pouvoir choisir si le
+type des connexions internes est une référence ou une référence constante,
+parce que \textbf{C++}!
+
+\paragraph{} Puis, comme tout programmeur se doit de respecter les conventions
+du langage, nous avons mis toutes les classe dans un namespace créé
+spécialement pour l'occasion, que nous avons appelé \texttt{graph}, reflétant
+notre nature d'adolescent engloutis par la société de consommation, délaissé
+sans aucune originalité propre.
+
+\paragraph{} Enfin, la plus grosse et donc la plus horrible des
+refactorisations a été de permettre de pouvoir stocker des valeurs d'un types
+arbitraires pour chaque sommet et pour chaque arc. Il a donc fallu rajouter un
+double template aux classes \texttt{Graph}. Nous avons choisis de stocker ce
+que l'on appellera les propriétés dans un vecteur pour les sommets, et dans une
+map ayant pour clef une paire d'identifiant dans le cas des arcs. Il a fallu
+ensuite concevoir une interface digne de ce nom. Nous avons aussi fournis des
+structures pour des graphes avec des fonctionnalités basiques, comme par
+exemple un poids ou, comme par hasard, des propriétés propre à l'A* ($g(n)$,
+$h(n)$).
+
 \part{Implémentation de l'algorithme}
+
+Utilisation du namespace awesome, puis l'on démarrera notre propre
+contre-culture.
 
 \part{Tests}
 
