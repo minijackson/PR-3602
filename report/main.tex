@@ -46,7 +46,7 @@
 
 \paragraph{} Le problème du voyageur de commerce est probablement le problème
 NP-complet le plus connu en algorithmique, mais dans le doute, voici la
-définition de Wikipedia~\cite{wiki:tsp}:
+définition de Wikipédia~\cite{wiki:tsp}:
 
 \begin{quote}
 	``Given a list of cities and the distances between each
@@ -111,7 +111,7 @@ Il s'agit tout simplement de l'heuristique qui n'estime pas. En dehors d'être
 le Saint Graal des heuristiques pour programmeurs fainéants, elle nous servira
 aussi à tester notre algorithme, qui se ramènera donc à Dijkstra, ce qui m'a
 fait reprendre à trois fois avant de pouvoir taper ce nom correctement. À
-n'utiliser que en derniers recours, donc.
+n'utiliser qu'en derniers recours, donc.
 
 \subsection{Arête de poids minimum}
 
@@ -174,7 +174,7 @@ types de graphes nous avons décidés de reprendre ce que j'avais\footnote{Ici
 IT-3004 mais avait abandonnée au bout de deux jours parce que flemmingite
 aigüe.
 
-Nous avons donc développé par dessus un bout de code en C++ développé sur un
+Nous avons donc développé par-dessus un bout de code en C++ développé sur un
 coup de tête, sans réflexion au préalable, et abandonné très rapidement. Aucun
 moyen que cela tourne mal, donc.
 
@@ -182,7 +182,7 @@ moyen que cela tourne mal, donc.
 avions décidé d'utiliser la BGL (Boost Graph Library) pour implémenter par
 dessus l'algorithme A*. Cependant, après beaucoup de frustration, de cheveux
 perdus, et après avoir remarqué le manque de documentation, tutoriels ou
-ressources en ligne, il était évidant que ce serait une chose à ne plus
+ressources en ligne, il était évident que ce serait une chose à ne plus
 refaire.
 
 \section{État initial}
@@ -248,10 +248,10 @@ Quel dommage\ldots
 
 \paragraph{} Le projet a donc commencé de manière très agréable avec une série
 de refactorisation du code de ce projet, afin de lui permettre d'être utilisée
-pour faire des ``vrais'' algorithmes par dessus.
+pour faire des ``vrais'' algorithmes par-dessus.
 
 \paragraph{} Nous avons d'abords mis certaines fonctions hors des classes car
-elle ne méritaient pas le status de ``méthodes''. Il s'agit surtout
+elles ne méritaient pas le status de ``méthodes''. Il s'agit surtout
 d'algorithmes qui opèrent sur le graphe, comme le calcul de symétrique ou de
 composantes connexes.
 
@@ -296,13 +296,12 @@ sans aucune originalité propre.
 \paragraph{} Enfin, la plus grosse et donc la plus horrible des
 refactorisations a été de permettre de pouvoir stocker des valeurs d'un types
 arbitraires pour chaque sommet et pour chaque arc. Il a donc fallu rajouter un
-double template aux classes \texttt{Graph}. Nous avons choisis de stocker ce
-que l'on appellera les propriétés dans un vecteur pour les sommets, et dans une
-map ayant pour clef une paire d'identifiant dans le cas des arcs. Il a fallu
+double template aux classes \texttt{Graph}. Nous avons choisi de stocker ce que
+l'on appellera les propriétés dans un vecteur pour les sommets, et dans une map
+ayant pour clef une paire d'identifiant dans le cas des arcs. Il a fallu
 ensuite concevoir une interface digne de ce nom. Nous avons aussi fournis des
-structures pour des graphes avec des fonctionnalités basiques, comme par
-exemple un poids ou, comme par hasard, des propriétés propre à l'A* ($g(n)$,
-$h(n)$).
+structures pour des graphes avec des fonctionnalités basiques, comme un poids
+ou, comme par hasard, des propriétés propre à l'A* ($g(n)$, $h(n)$).
 
 \part{Implémentation de l'algorithme}
 
