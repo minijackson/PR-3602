@@ -25,7 +25,7 @@ namespace awesome {
 
 	protected:
 		struct CompareFunc {
-			bool operator()(GraphConstNode lhs, GraphConstNode rhs) const {
+			bool operator()(GraphConstNode const& lhs, GraphConstNode const& rhs) const {
 				return (lhs.getProperty().gScore + lhs.getProperty().hScore) <
 				       (rhs.getProperty().gScore + rhs.getProperty().hScore);
 			}

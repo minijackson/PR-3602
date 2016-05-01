@@ -21,7 +21,6 @@ namespace awesome {
 			psg.addEdges({"-1", townName});
 			psg[townName].setProperty({/* gScore = */ 0,
 			                           /* hScore = */ heuristic(map, psg[townName]),
-			                           /* parent = */ "-1",
 			                           /* state = */ map});
 			openNodes.insert(psg[townName]);
 		});
@@ -68,7 +67,7 @@ namespace awesome {
 			}
 		}
 
-		MapGraph const& state = node.getProperty().state;
+		MapGraph const state = node.getProperty().state;
 
 		std::string::size_type commaPos = nodeName.rfind(",");
 		std::string currentTownName;
@@ -103,8 +102,7 @@ namespace awesome {
 			                            {/* gScore = */ psgParentNode.getProperty().gScore +
 			                                     state.getEdgeProperty(currentTown, newTown).weight,
 			                             /* hScore = */ heuristic(newState, psgNewNode),
-			                             /* parent = */ psgParentNodeName,
-			                             /* state = */ newState});
+			                             /* state = */ std::move(newState)});
 
 								if(!isFailure(psgNewNode) || isGoal(psgNewNode)) {
 									openNodes.insert(psgNewNode);
