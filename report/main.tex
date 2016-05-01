@@ -362,15 +362,112 @@ Graph myGraph{{"Paris", "New-York", {3}},
 \label{tsp:better}
 \end{listing}
 
-
 \part{Implémentation de l'algorithme}
 
-Utilisation du namespace awesome, puis l'on démarrera notre propre
-contre-culture.
+\paragraph{} Après avoir passé une semaine entière à développer une
+bibliothèque complètement superflue pour l'algorithme A* et autre algorithmes
+graphesques, nous avons décidé de nous attaquer enfin à l'implémentation du
+cœur du projet PR-3602.
+
+\paragraph{} Afin d'enfin nous détacher de cette horrible masse de
+conformistes, nous avons choisir d'utiliser cette fois si le namespace
+\texttt{awesome} pour englober notre implémentation. Nous avons aussi décidé de
+démarrer notre propre mouvement contre-culture. Cependant, nous avons un doute
+sur l'efficacité de notre implémentation de la dernière proposition.
+
+\section{Les heuristiques}
+
+\section{Le solutionneur (enfin)}
+
+\paragraph{} Étant dans l'obligation de traduire tous les concepts anglais,
+nous sommes (regrettablement) obligé de mettre ``solutionneur'' à la place du
+simple et beau mot anglais: ``solver''.
+
+\paragraph{} Nous avons donc utilisé deux types de graphes sur lequel
+travaillé, avec des propriétés gentiment fournies par notre bibliothèque:
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+using MapGraph = Graph<NoProperty, WeightedProperty>;
+\end{minted}
+\caption{Type utilisé pour la carte}
+\label{tsp:map}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+using PSGGraph = Graph<AstarNodeProperty<MapGraph>, WeightedProperty>;
+\end{minted}
+\caption{Type utilisé pour notre graphe de résolution de problème}
+\label{tsp:psg}
+\end{listing}
+
+\paragraph{} Avec ci-dessous les déclarations de \texttt{NoProperty},
+\texttt{WeightedProperty}, \texttt{AstarNodeProperty}:
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+struct NoProperty {
+	bool operator==(NoProperty const&) const {
+		return true;
+	}
+};
+\end{minted}
+\caption{Déclaration de la structure NoProperty}
+\label{tsp:psg}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+struct WeightedProperty {
+	int weight;
+
+	bool operator==(WeightedProperty const& other) const {
+		return weight == other.weight;
+	}
+};
+\end{minted}
+\caption{Déclaration de la structure WeightedProperty}
+\label{tsp:psg}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+template <typename State>
+struct AstarNodeProperty {
+	int gScore;
+	int hScore;
+
+	State state;
+
+	bool operator==(AstarNodeProperty const& other) const;
+};
+
+template <>
+struct AstarNodeProperty<void> {
+	int gScore;
+	int hScore;
+
+	bool operator==(AstarNodeProperty const& other) const;
+};
+\end{minted}
+\caption{Déclaration de la structure AstarNodeProperty}
+\label{tsp:psg}
+\end{listing}
+
+\paragraph{} Il nous a semblé intéressant de pouvoir mettre l'état
+intermédiaire dans chaque sommet, pour qu'il puisse être utilisable rapidement
+dans les heuristiques. Si jamais l'utilisateur ne veut pas stocker l'état
+intermédiaire, c'est à ça que sert la spécialisation avec
+\mintinline{cpp}{void}. Mais pour cela il faudra qu'un utilisateur existe.
 
 \part{Tests}
 
+\section{MapGen}
+
 \part{Jouons à Hercule Poirot}
+
+{\Huge TODO: cite fizzbuzz}
 
 \part{Pour aller plus loin}
 
