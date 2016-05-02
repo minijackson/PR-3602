@@ -7,7 +7,7 @@ namespace awesome {
 	NullHeuristic::NullHeuristic(Graph const& psg, MapGraph const& map)
 	      : Heuristic(psg, map) {}
 
-	int NullHeuristic::operator()(MapGraph const&, GraphConstNode) {
+	int NullHeuristic::operator()(MapGraph const&, GraphConstNode const&) {
 		return 0;
 	}
 }

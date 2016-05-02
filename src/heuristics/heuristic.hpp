@@ -16,7 +16,7 @@ namespace awesome {
 
 		Heuristic(Graph const& psg, MapGraph const& map);
 
-		virtual int operator()(MapGraph const& state, GraphConstNode node) = 0;
+		virtual int operator()(MapGraph const& state, GraphConstNode const& node) = 0;
 
 	protected:
 		virtual ~Heuristic() = default;

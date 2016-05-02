@@ -7,7 +7,7 @@ namespace awesome {
 	ShortestPathHeuristic::ShortestPathHeuristic(Graph const& psg, MapGraph const& map)
 	      : Heuristic(psg, map) {}
 
-	int ShortestPathHeuristic::operator()(MapGraph const& state, GraphConstNode) {
+	int ShortestPathHeuristic::operator()(MapGraph const& state, GraphConstNode const&) {
 
 		int min = std::numeric_limits<int>::max();
 
