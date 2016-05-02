@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,unicode]{hyperref}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage[left=1.3in,right=1.3in]{geometry}
@@ -224,7 +225,7 @@ projet.
 		\end{minted}
 {\fontspec{Humor-Sans}
 	\begin{tikzpicture}[overlay]
-		\draw[thick,<-] (6:4.3) to [out=-30,in=180] (-2:8) [anchor=west,text width=2cm] node{Nombre de sommets};
+		\draw[thick,<-] (6:4.3) to [out=-30,in=180] (-2:8) [anchor=west,text width=6cm] node{Nombre de sommets\\ {\color{red} parametre disparu}};
 	\end{tikzpicture}
 }
 	\item Ajouter des arcs.
@@ -319,8 +320,7 @@ C++), il y avait quand même du bon dans ce sous-projet. En voici un top trois:
 
 \subsubsection{3\ieme{} place}
 
-\paragraph{} Les tests unitaires couvrent 97.8\% de la base de code!  {\huge
-	\Smiley{}}
+\paragraph{} Les tests unitaires couvrent 97.8\% de la base de code! \Smiley{}
 
 \subsubsection{2\ieme{} place}
 
@@ -339,8 +339,8 @@ ceci:
 \begin{listing}[H]
 \begin{minted}{cpp}
 Graph myGraph{
-	std::make_tuple("Paris", "New-York", WeightedProperty{3}),
-	std::make_tuple("New-York", "Paris", WeightedProperty{3}),
+	std::make_tuple("Paris", "New-York", WeightedProperty{5851}),
+	std::make_tuple("New-York", "Paris", WeightedProperty{5851}),
 	std::make_tuple("Houilles", "Noisy-Champs", WeightedProperty{13}),
 	std::make_tuple("Noisy-Champs", "Houilles", WeightedProperty{13})
 };
@@ -353,8 +353,8 @@ Par ceci:
 
 \begin{listing}[H]
 \begin{minted}{cpp}
-Graph myGraph{{"Paris", "New-York", {3}},
-              {"New-York", "Paris", {3}},
+Graph myGraph{{"Paris", "New-York", {5851}},
+              {"New-York", "Paris", {5851}},
               {"Houilles", "Noisy-Champs", {13}},
               {"Noisy-Champs", "Houilles", {13}}};
 \end{minted}
@@ -376,6 +376,51 @@ démarrer notre propre mouvement contre-culture. Cependant, nous avons un doute
 sur l'efficacité de notre implémentation de la dernière proposition.
 
 \section{Les heuristiques}
+
+\paragraph{} Comme la clarté du code est un critère extrêmement important pour
+cette unité, nous avons créé une classe abstraite \texttt{Heuristique} (de
+nouveau dans l'inoriginalité). Cette classe a besoin d'un référence vers le PSG
+et une référence à la carte de base à la construction, et possède une fonction
+virtuelle pure \mintinline{cpp}{operator()} prenant en paramètre l'état actuel
+(la carte privée des villes déjà parcourues) et le sommets sur lequel on est
+dans le graph de résolution.
+
+\subsection{Nulle}
+
+\paragraph{} Il n'y a pas grand chose à dire ici. Voici la surcharge de
+\mintinline{cpp}{operator()} pour référence seulement:
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+int NullHeuristic::operator()(MapGraph const&, GraphConstNode const&) {
+	return 0;
+}
+\end{minted}
+\caption{Une fonction très compliquée}
+\label{tsp:nulloperator}
+\end{listing}
+
+\subsection{Arête de poids minimum}
+
+\paragraph{} Aussi très simple à coder, nous avons utilisé une combinaison d'un
+algorithme de calcul de minimum avec la méthode \texttt{eachEdges}.
+
+\subsection{Dijkstra}
+
+\paragraph{} Oups, nous avons oublié de l'implémenter. Ce n'est pas très grave
+parce que de toute manière la complexité de cette heuristique est trop élevée,
+ou tout autre excuse fournie allègrement par le biais de confirmation ou dénis
+scientifique.
+
+\subsection{Arbre de poids minimum}
+
+\paragraph{} Ayant pris l'algorithme directement depuis un certain polycopié de
+couleur saumon, le plus difficile dans cette heuristique a sûrement été de
+remarquer que nous essayions de faire marcher l'algorithme de Prim sur un graph
+orienté.
+
+Cet ainsi qu'est né la fonction \texttt{undirected} calculant le graph orienté
+équivalent, tout comme la fonction \texttt{minimumSpanningTree} d'ailleurs.
 
 \section{Le solutionneur (enfin)}
 
@@ -414,7 +459,7 @@ struct NoProperty {
 };
 \end{minted}
 \caption{Déclaration de la structure NoProperty}
-\label{tsp:psg}
+\label{tsp:noprop}
 \end{listing}
 
 \begin{listing}[H]
@@ -428,7 +473,7 @@ struct WeightedProperty {
 };
 \end{minted}
 \caption{Déclaration de la structure WeightedProperty}
-\label{tsp:psg}
+\label{tsp:weightedprop}
 \end{listing}
 
 \begin{listing}[H]
@@ -452,7 +497,7 @@ struct AstarNodeProperty<void> {
 };
 \end{minted}
 \caption{Déclaration de la structure AstarNodeProperty}
-\label{tsp:psg}
+\label{tsp:astarnodeprop}
 \end{listing}
 
 \paragraph{} Il nous a semblé intéressant de pouvoir mettre l'état
