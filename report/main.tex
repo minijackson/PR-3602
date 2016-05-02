@@ -253,7 +253,7 @@ de refactorisation du code de ce projet, afin de lui permettre d'être utilisée
 pour faire des ``vrais'' algorithmes par-dessus.
 
 \paragraph{} Nous avons d'abords mis certaines fonctions hors des classes car
-elles ne méritaient pas le status de ``méthodes''. Il s'agit surtout
+elles ne méritaient pas le statut de ``méthodes''. Il s'agit surtout
 d'algorithmes qui opèrent sur le graphe, comme le calcul de symétrique ou de
 composantes connexes.
 
@@ -280,7 +280,7 @@ Graph symmetric(Graph const& g) {
 \label{tsp:symmetric}
 \end{listing}
 
-\paragraph{} L'étape suivante à été de rajouter le type \texttt{ConstNode} qui,
+\paragraph{} L'étape suivante a été de rajouter le type \texttt{ConstNode} qui,
 à l'instar de la class \texttt{Node} permet d'accéder à des méthodes sur les
 sommets uniquement, mais à partir d'un \texttt{Graph} non modifiable
 (\mintinline{cpp}{const}). Pour éviter la duplication de code entre
@@ -419,8 +419,9 @@ couleur saumon, le plus difficile dans cette heuristique a sûrement été de
 remarquer que nous essayions de faire marcher l'algorithme de Prim sur un graph
 orienté.
 
-Cet ainsi qu'est né la fonction \texttt{undirected} calculant le graph orienté
-équivalent, tout comme la fonction \texttt{minimumSpanningTree} d'ailleurs.
+Cet ainsi qu'est né la fonction \texttt{undirected} calculant le graph
+non-orienté équivalent, tout comme la fonction \texttt{minimumSpanningTree}
+d'ailleurs.
 
 \section{Le solutionneur (enfin)}
 
@@ -510,11 +511,27 @@ intermédiaire, c'est à ça que sert la spécialisation avec
 
 \section{MapGen}
 
+\section{Benchmarks}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{graphs/benchmarks.pdf}
+	\caption{Résultats du benchmark}
+	\label{fig:benchmarks}
+\end{figure}
+
 \part{Jouons à Hercule Poirot}
 
-{\Huge TODO: cite fizzbuzz}
+{\Huge TODO}
+
+cite fizzbuzz\\
+gprof, kcachegrind (screenshots?)
 
 \part{Pour aller plus loin}
+
+{\Huge TODO}
+
+generic astar solver
 
 \printbibliography%
 
