@@ -2,8 +2,6 @@
 
 \usepackage[french]{babel}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 \usepackage[hidelinks,unicode]{hyperref}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{graphicx}
@@ -425,6 +423,8 @@ d'ailleurs.
 
 \section{Le solutionneur (enfin)}
 
+\subsection{Types}
+
 \paragraph{} Étant dans l'obligation de traduire tous les concepts anglais,
 nous sommes (regrettablement) obligé de mettre ``solutionneur'' à la place du
 simple et beau mot anglais: ``solver''.
@@ -507,13 +507,72 @@ dans les heuristiques. Si jamais l'utilisateur ne veut pas stocker l'état
 intermédiaire, c'est à ça que sert la spécialisation avec
 \mintinline{cpp}{void}. Mais pour cela il faudra qu'un utilisateur existe.
 
+\subsection{Structure}
+
+{\fontspec{Humor-Sans} \paragraph{} La structure de la classe TSPSolver...}
+oups, pardon, mauvaise police de caractère. Je disais donc que la structure de
+la classe TSPSolver comporte 8 méthodes:
+
+\begin{itemize}
+	\item Le constructeur (prends en paramètre la carte de base)
+	\item \texttt{goForIt}, qui lance l'algorithme
+	\item \texttt{finishLine}, qui reconstruit le chemin de villes un fois l'algorithme terminé
+	\item \texttt{develop}, qui développe un sommet du PSG
+	\item \texttt{findInOpenNodes}, qui retourne un itérateur d'un sommet sur
+		la liste OUVERT (je sais pas pourquoi il faut le mettre en majuscule
+		mais c'était sur le site PR-3602).
+	\item \texttt{isGoal}, bah ça vérifie si un sommet est du PSG est un but.
+	\item \texttt{isFailure} pareil que précédemment mais dans le cas d'une
+		impossibilité (si l'on retourne à la ville de départ sans être passé
+		par toutes les villes)
+	\item \texttt{isStart} vérifie si un sommet du PSG ne contient que la ville
+		de départ.
+	\item \mintinline{cpp}{CompareFunc::operator()} compare deux sommets du PSG
+		relativement au $f(n) = g(n) + h(n)$
+\end{itemize}
+
+\paragraph{} ``Il y a 9 méthodes!'' vous empresserez vous de me dire, désireux
+de pointer chaque erreurs de ce rapport. Cependant, tout était prévu: le
+constructeur n'est pas une ``vraie'' méthode, ni
+\mintinline{cpp}{CompareFunc::operator()} qui est dans une structure interne à
+la classe. Chacun compte donc pour $\frac{1}{2}$.
+
+\paragraph{} À ce propos, il me semble judicieux d'expliquer la raison de
+l'existence de la structure \texttt{CompareFunc}. Plutôt que de chercher le
+sommet du PSG ayant le score $f(n)$ minimal parmi tous les sommets de la liste
+\textbf{OUVERT}, nous avons décidé d'utiliser un conteneur stockant de manière
+triée, permettant une insertion et recherche de complexité logarithmique. La
+définition de la liste \textbf{\Large{OUVERT}} est telle:
+
+\begin{minted}{cpp}
+std::multiset<GraphConstNode, CompareFunc> openNodes;
+\end{minted}
+
+\paragraph{} Il s'agit d'un \texttt{multiset} et non un \texttt{set} car aux
+yeux de ces classes, si l'on fourni notre fonction de comparaison, deux sommets
+ayant le même score $f(n)$ sont égaux. Il nous faut donc un conteneur
+permettant de stocker plusieurs sommets ``égaux'', donc \texttt{multiset}.
+
+\paragraph{} Tout le reste s'est passé très vite. Prendre le premier élément de
+la liste \textbf{\huge{OUVERT}}, développer le sommet, ce qui reviens à
+regarder les adjacents du sommet actuel dans la carte intermédiaire, les
+ajouter dans le PSG et la liste \textbf{\Huge{OUVERT}} s'il ne sont pas
+``impossibles'', en prenant en compte leur score $g(n)$ et $h(n)$ et la
+nouvelle carte intermédiaire. Il est important de noter qu'il ne faut pas
+supprimer la ville de départ dans les débuts de l'algorithme, sinon le pauvre
+voyageur de commerce errera éternellement entre les sommets du PSG, sans
+arrivée.
+
 \part{Tests}
+
+\paragraph{} Après avoir passé un peu plus d'un jour à faire l'algorithme A*,
+nous nous retrouvions soudainement dans cette oisiveté insoutenable.
 
 \section{MapGen}
 
 \section{Benchmarks}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{graphs/benchmarks.pdf}
 	\caption{Résultats du benchmark}
