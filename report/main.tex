@@ -95,7 +95,7 @@ on aura:
 \includegraphics[scale=0.5]{graphs/modeling-the-problem_example2.pdf}
 \end{center}
 
-\section{Heuristiques}
+\section{Heuristiques}\label{sec:modheuristics}
 
 \paragraph{} Pour ne pas être aussi inefficace que Dijkstra et pouvoir enfin
 s'appeler A*, parce qu'avoir un nom prononçable c'est aussi important, il nous
@@ -568,7 +568,7 @@ arrivée.
 \paragraph{} Après avoir passé un peu plus d'un jour à faire l'algorithme A*,
 nous nous retrouvions soudainement dans cette oisiveté insoutenable.
 
-\section{MapGen}
+\section{MapGen}\label{sec:mapgen}
 
 \paragraph{} Nous avons donc fait une classe C++ pour générer des cartes afin
 de ne pas avoir à rentrer manuellement des cartes de plus de 5 villes, parce
@@ -611,6 +611,12 @@ chemin de référence, pfiouu\ldots
 
 \section{Benchmarks}
 
+\paragraph{} Pour agrémenter ce rapport de magnifiques graphiques, nous avons
+choisit de faire des benchmarks (ou tests de performances en français, mais
+c'est beaucoup trop long à taper). Les benchmarks effectués portent sur la
+performance des différentes heuristiques dans le cas de cartes générées comme
+décrit dans la section~\ref{sec:mapgen}. En voici les résultats:
+
 \begin{figure}[H]
 	\centering
 	{\fontspec{Humor-Sans}
@@ -625,12 +631,86 @@ chemin de référence, pfiouu\ldots
 	\label{fig:benchmarks}
 \end{figure}
 
+\paragraph{} Comme prévu, on remarque que l'heuristique nulle l'est beaucoup.
+L'heuristique \emph{ShortestPathHeuristic}, qui correspond en fait à
+l'heuristique de l'arête de poids minimum, n'est pas bien meilleure. On notera
+que l'on a pas de données pour ces deux heuristiques au delà de 9 villes, car à
+plus de 9 villes la mémoire continue de se faire grignoter jusqu'au dessus de
+la mémoire physique, ce qui résulte à une utilisation du disque dur à la place,
+et fausse les résultats. Regarder la mémoire grimper graduellement est
+d'ailleurs une expérience assez stressante.
+
+\paragraph{} Aussi décrit dans la section heuristique de la partie
+modélisation, l'heuristique du MST est vraiment impressionnante. Tellement
+impressionnante que j'ai voulu mettre une échelle logarithmique sur l'axe des
+$y$ mais je n'ai pas réussi. On ajoutera que les performances ne sont pas
+toujours constantes. Au contraire il arrive que, dans le cas de 16 villes, on
+dépasse la barre des 15 secondes ou même la limite de mémoire si l'on a pas de
+chance, alors que la majorité des résolutions tourne dans l'ordre de la
+demi-seconde.
+
+\paragraph{} On remarque aussi que les trois courbes on étonnement la forme
+d'une exponentielle croissante. Est-ce parce que le problème du voyageur de
+commerce est NP-complet et que l'on utilise l'A*? C'est très probable.
+
 \part{Jouons à Hercule Poirot}
 
-{\Huge TODO}
+\paragraph{} Cette partie décrivait nos tentatives vaines de trouver la source
+d'un gros problème de performance qui nous avait suggéré par le fait que des
+personnes nous ont dit pouvoir traiter plus de 500 villes en environ 16
+secondes. Après une enquête plus poussée, nous avons remarqué que la grande
+majorité des autres groupes étaient dans le même ordre de performance que le
+notre. Malheureusement, ce fût après une série de questions lancées au ciel:
+``Pourquoi?'', ``Comment résoudre?''. Tant pis alors. Nous laissons quand même
+cette partie car les éléments qui suivent ne sont pas forcément injustifiés.
 
-cite fizzbuzz\\
-gprof, kcachegrind (screenshots?)
+\section{FizzBuzzEnterpriseEdition}
+
+\paragraph{} Une possibilité d'un problème de performance viendrait que notre
+programme a été fait à la base de manière très générique. Notre implémentation
+de graphe a été codée de manière à ce que n'importe qui voulant utiliser des
+graphes en C++ pourraient utilise notre bibliothèque. Par conséquence, il n'est
+pas spécifiquement optimisé pour le problème de l'A*, encore moins le problème
+du voyageur de commerce en utilisant l'A*. Cela nous a fait pensé à
+\emph{FizzBuzzEnterpriseEdition}~\cite{fun:fizzbuzz} qui est une satire du
+développement en entreprise, en construisant un programme des plus simple mais
+d'une manière la plus improbable qui soit.
+
+\section{Profiling}
+
+\paragraph{} Une tentative d'amélioration de performances a été d'utiliser des
+outils spécialisé dans le profiling, pour voir dans notre programme quelles
+fonctions prennent le plus de pourcentage de temps.
+
+\paragraph{} Nous avons commencé à utiliser \emph{gprof} avec un outils nous
+permettant d'analyser la sortie de \emph{gprof} pour pouvoir nous afficher un
+diagramme. Cependant le diagramme s'est retrouvé d'une taille tellement
+gargantuesque, que l'analyse s'est finie en ``Qui est le premier à arriver à
+trouver le carré le plus rouge qu'il soit?''. Pas très optimal donc.
+
+\paragraph{} L'outil suivant a été le module \emph{callgrind} de
+\emph{valgrind} avec le visualisateur \emph{kcachegrind} qui est nettement plus
+agréable à regarder, et donc accroît notre productivité. Les informations qui
+nous a fournie étaient celles qui étaient prévisibles depuis le début, mais qui
+pour une raison quelconque nous avaient échappées. Notamment, les fonctions
+prenant le plus de temps relativement sont les fonctions le plus appelées,
+comme la fonction de comparaison de sommets de PSG, les heuristiques, et les
+fonctions d'ajout d'arcs, etc.
+
+\paragraph{} Au final, bien qu'en comprenant de mieux en mieux le
+fonctionnement interne de notre programme, nous nous apercevions que nous
+connaissions de moins en moins la source du dit problème de performance.
+
+\section{Passage par référence}
+
+\paragraph{} La solution qui nous a permis de gagner un peu de performance a
+été celle de passer certains paramètre de fonction par référence, c'est à dire
+ne pas copier l'objet pour qu'il soit utilisé à l'intérieur de la fonction mais
+de le passer directement, comme si nous utilisions un pointeur, mais sans
+pointeur (la magie du C++).
+
+\paragraph{} Cette solutions nous a permis de gagner quelques secondes sur des
+tests ayant une durée un peu conséquente.
 
 \part{Pour aller plus loin}
 
