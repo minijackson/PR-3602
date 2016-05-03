@@ -15,7 +15,9 @@ namespace awesome {
 		using GraphConstNode = Graph::ConstNode_t;
 
 		Heuristic(Graph const& psg, MapGraph const& map);
-
+		
+		// Cette classe est "callable" : Pour lancer, l'heuristique, on peut directement
+		// appeller l'objet créé. On définit pour cela l'opérateur "()"
 		virtual int operator()(MapGraph const& state, GraphConstNode const& node) = 0;
 
 	protected:
