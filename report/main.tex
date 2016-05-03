@@ -279,8 +279,8 @@ Graph symmetric(Graph const& g) {
 \end{listing}
 
 \paragraph{} L'étape suivante a été de rajouter le type \texttt{ConstNode} qui,
-à l'instar de la class \texttt{Node} permet d'accéder à des méthodes sur les
-sommets uniquement, mais à partir d'un \texttt{Graph} non modifiable
+à l'instar (haha) de la class \texttt{Node} permet d'accéder à des méthodes sur
+les sommets uniquement, mais à partir d'un \texttt{Graph} non modifiable
 (\mintinline{cpp}{const}). Pour éviter la duplication de code entre
 \texttt{Node} et \texttt{ConstNode}, la solution choisie a été de créer une
 classe mère \texttt{GenericNode} ayant un template pour pouvoir choisir si le
@@ -570,11 +570,57 @@ nous nous retrouvions soudainement dans cette oisiveté insoutenable.
 
 \section{MapGen}
 
+\paragraph{} Nous avons donc fait une classe C++ pour générer des cartes afin
+de ne pas avoir à rentrer manuellement des cartes de plus de 5 villes, parce
+que la fainéantise est importante en informatique, et aussi parce que c'était
+demandé.
+
+\paragraph{} La méthode utilisée pour générer une carte aléatoire était de
+générer une liste de coordonnée et d'ajouter des arcs correspondant aux
+distances entre les villes dans la carte.
+
+\paragraph{} Nous avons aussi ajouté la fonctionnalité de pouvoir lire un
+fichier \emph{csv} stockant une matrice de distances.
+
+\section{Tests unitaires}
+
+\paragraph{} Tout au long du projet nous avons rajouté des tests unitaire en
+utilisant la bibliothèque \emph{Boost Test}, qui, soit dit en passant, avait
+beaucoup plus de ressources que la BGL. De manière générale, un fichier
+comporte des tests sur une classe et un test vérifie les fonctionnalités d'une
+méthode.
+
+\paragraph{} En utilisant des options de compilation particulières
+(\texttt{--coverage}) et avec le programme \emph{lcov}, on peut vérifier que
+nos tests vérifient bien les fonctionnalités de notre base entière de code.
+Cela nous permet aussi de frimer en société et opère d'une manière plutôt
+importante sur notre orgueil et autosatisfaction.
+
+\paragraph{} Nous utilisons aussi cette méthode, même s'il on ne peut plus
+considérer ces tests comme ``unitaire'', pour vérifier que l'algorithme A*
+marche bien avec des cas prédéfinis, et avec plusieurs heuristiques. Il est
+évident que après avoir vérifié sur 3 / 4 / 5 cas, si l'algorithme marche il
+est garanti qu'il va marcher dans tous les cas de figures. C'est une loi
+universelle indéniable\ldots
+
+\paragraph{} À noter que le résultat donné est toujours optimal en terme de
+poids mais en fonction de l'heuristique, le chemin peut changer. Cela peut
+faire peur au début quand on voit que ce qui avait marché juste avant affiche
+\textbf{FAILED} avec une autre heuristique. Il suffisait juste de changer le
+chemin de référence, pfiouu\ldots
+
 \section{Benchmarks}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{graphs/benchmarks.pdf}
+	{\fontspec{Humor-Sans}
+	\begin{tikzpicture}
+		\node (img) at (0,0) {\includegraphics[scale=0.8]{graphs/benchmarks.pdf}};
+		\node (comp) at (4,4) {Mon ordinateur dit "NON"};
+		\draw[thick,<-] (-.9,0) to [out=10,in=180] (comp);
+		\draw[thick,<-] (-.9,4.5) to [out=-10,in=180] (comp);
+	\end{tikzpicture}
+	}
 	\caption{Résultats du benchmark}
 	\label{fig:benchmarks}
 \end{figure}
