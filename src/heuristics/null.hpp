@@ -4,9 +4,9 @@
 
 namespace awesome {
 
-	/*! \brief ShortestPathHeuristic description
-	 *
-	 * Detailed description
+	/* The  Null Heuristic inherits from the abstract heuristic class.
+	 * It simply returns 0 every time it's called
+	 * It's the fastest and least performant heuristic
 	 */
 	class NullHeuristic : public Heuristic {
 	public:

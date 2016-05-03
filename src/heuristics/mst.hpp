@@ -4,7 +4,7 @@
 
 namespace awesome {
 
-	/* The  MST Heuristic (Minimum Spanning Tree) inherists from the abstract heuristic class.
+	/* The  MST Heuristic (Minimum Spanning Tree) inherits from the abstract heuristic class.
 	 * It uses the MST algorithm on the map where the cities we've already visited are removed.
 	 * That way we get a precise estimate of the cost, event though it might be a bit slower 
 	 * than other heuristics.
