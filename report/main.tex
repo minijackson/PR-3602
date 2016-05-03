@@ -149,9 +149,23 @@ approximation!
 \section{Moteur de production}
 
 \begin{itemize}
-	\item Meson~\cite{tools:meson} todo: dire que le site est moche
-	\item Ninja~\cite{tools:ninja}
+	\item Meson~\cite{tools:meson}, un système de build conçu pour être simple, efficace et surtout rapide. Il est multi plateforme (Linux, OSX, Windows), multi-compilateur (GCC, Clang) et multi-langages (C, C++, Fortran, Java, Rust)
+
+	\item Ninja~\cite{tools:ninja} est un gestionnaire de compilation, qui à partir des fichiers générés par meson orchestre et optimise la compilation pour que seuls les fichiers nécéssaires soient compilés et qu'elle soit la plus rapide possible	
 \end{itemize}
+\paragraph{} La procédure se déroule comme suit : Dans le répertoire build, On lance d'abort la commande
+
+\begin{minted}{bash}
+	meson .. --warnlevel=3
+\end{minted}
+
+Qui créé la configuration ninja dans le dossier parent (En affichant tous les avertissements éventuels), puis on lance
+
+\begin{minted}{bash}
+	ninja test
+\end{minted}
+
+Qui éxecute les test préalablement définis.
 
 \textbf{\Huge{TODO}}
 
