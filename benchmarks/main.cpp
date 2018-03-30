@@ -10,9 +10,9 @@
 #include <iostream>
 
 int main() {
-	awesome::MapGen::MapGraph map = awesome::MapGen::random(6);
+	awesome::MapGen::MapGraph map = awesome::MapGen::random(16);
 
-	awesome::TSPSolver<awesome::ShortestPathHeuristic> solver(map);
+	awesome::TSPSolver<awesome::MSTHeuristic> solver(map);
 
 	auto start = std::chrono::high_resolution_clock::now();
 

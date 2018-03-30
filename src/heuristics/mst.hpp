@@ -4,19 +4,23 @@
 
 namespace awesome {
 
-	/* The  MST Heuristic (Minimum Spanning Tree) inherits from the abstract heuristic class.
-	 * It uses the MST algorithm on the map where the cities we've already visited are removed.
-	 * That way we get a precise estimate of the cost, event though it might be a bit slower 
-	 * than other heuristics.
+	/*! \brief The heuristic using an MST.
 	 */
 	class MSTHeuristic : public Heuristic {
 	public:
-		/*! \brief MSTHeuristic description
+		/*! \brief Construct an MSTHeuristic.
 		 *
-		 * Detailed description
+		 * \param psg the psg of the A* algorithm.
+		 * \param map the map of the problem.
 		 */
 		MSTHeuristic(Graph const& psg, MapGraph const& map);
 
+		/*! \brief Get the \f$h(n)\f$ score of a given PSG node.
+		 *
+		 * \param state the intermediate state.
+		 * \param node the given node.
+		 * \return the \f$h(n)\f$ score of a given node.
+		 */
 		int operator()(MapGraph const& state, GraphConstNode const& node) override;
 	protected:
 	private:

@@ -24,37 +24,53 @@ public:
 	std::vector<std::pair<int64_t, uint64_t>> getExperimentValues() const override {
 		std::vector<std::pair<int64_t, uint64_t>> nodeCounts;
 
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(4, 0));
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(8, 0));
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(16, 0));
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(32, 0));
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(64, 0));
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(128, 0));
-		nodeCounts.push_back(std::pair<int64_t, uint64_t>(256, 0));
+		nodeCounts.push_back({2, 0});
+		nodeCounts.push_back({3, 0});
+		nodeCounts.push_back({4, 0});
+		nodeCounts.push_back({5, 0});
+		nodeCounts.push_back({6, 0});
+		nodeCounts.push_back({7, 0});
+		nodeCounts.push_back({8, 0});
+		nodeCounts.push_back({9, 0});
+		nodeCounts.push_back({10, 0});
+		nodeCounts.push_back({11, 0});
+		nodeCounts.push_back({12, 0});
+		nodeCounts.push_back({13, 0});
+		nodeCounts.push_back({14, 0});
+		nodeCounts.push_back({15, 0});
+		nodeCounts.push_back({16, 0});
 
 		return nodeCounts;
 	}
 
 	void setUp(int64_t experimentValue) override {
 		map = awesome::MapGen::random(experimentValue);
+		this->experimentValue = experimentValue;
 	}
 
 protected:
 	MapGraph map;
+	int64_t experimentValue;
 
 };
 
 BASELINE_F(TSPSolver, NullHeuristic, TSPSolverFixture, 10, 1) {
-	TSPSolver<NullHeuristic> nullTSPSolver(map);
-	celero::DoNotOptimizeAway(nullTSPSolver.goForIt());
+	if(experimentValue < 10) {
+		TSPSolver<NullHeuristic> nullTSPSolver(map);
+		celero::DoNotOptimizeAway(nullTSPSolver.goForIt());
+	}
 }
 
 BENCHMARK_F(TSPSolver, ShortestPathHeuristic, TSPSolverFixture, 10, 1) {
-	TSPSolver<ShortestPathHeuristic> shortestPathTSPSolver(map);
-	celero::DoNotOptimizeAway(shortestPathTSPSolver.goForIt());
+	if(experimentValue < 10) {
+		TSPSolver<ShortestPathHeuristic> shortestPathTSPSolver(map);
+		celero::DoNotOptimizeAway(shortestPathTSPSolver.goForIt());
+	}
 }
 
 BENCHMARK_F(TSPSolver, MSTHeuristic, TSPSolverFixture, 10, 1) {
-	TSPSolver<MSTHeuristic> mstTSPSolver(map);
-	celero::DoNotOptimizeAway(mstTSPSolver.goForIt());
+	if(experimentValue < 17) {
+		TSPSolver<MSTHeuristic> mstTSPSolver(map);
+		celero::DoNotOptimizeAway(mstTSPSolver.goForIt());
+	}
 }
