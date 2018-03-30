@@ -20,6 +20,8 @@
 \usepackage{minted}
 %\usemintedstyle{colorful}
 
+\usepackage{dirtree}
+
 \usepackage{pdfpages}
 
 \usepackage{titling}
@@ -149,27 +151,39 @@ approximation!
 \section{Moteur de production}
 
 \begin{itemize}
-	\item Meson~\cite{tools:meson}, un système de build conçu pour être simple, efficace et surtout rapide. Il est multi plateforme (Linux, OSX, Windows), multi-compilateur (GCC, Clang) et multi-langages (C, C++, Fortran, Java, Rust)
+	\item Meson~\cite{tools:meson}, un système de build conçu pour être simple,
+		efficace et surtout rapide. Il est multi plateforme (Linux, OSX,
+		Windows), multi-compilateur (GCC, Clang) et multi-langages (C, C++,
+		Fortran, Java, Rust). On notera aussi qu'il possède un site avec une
+		palette de couleur assez mal choisie.
 
-	\item Ninja~\cite{tools:ninja} est un gestionnaire de compilation, qui à partir des fichiers générés par meson orchestre et optimise la compilation pour que seuls les fichiers nécéssaires soient compilés et qu'elle soit la plus rapide possible	
+	\item Ninja~\cite{tools:ninja} est un gestionnaire de compilation, qui à
+		partir des fichiers générés par meson orchestre et optimise la
+		compilation pour que seuls les fichiers nécéssaires soient compilés et
+		qu'elle soit la plus rapide possible. Il s'agit donc principalement
+		d'une alternative à Make mais plus rapide et à vocation d'être généré
+		automatiquement.
 \end{itemize}
-\paragraph{} La procédure se déroule comme suit : Dans le répertoire build, On lance d'abort la commande
+
+\paragraph{} La procédure se déroule comme suit: Dans le répertoire build, On
+lance d'abort la commande:
 
 \begin{minted}{bash}
 	meson .. --warnlevel=3
 \end{minted}
 
-Qui créé la configuration ninja dans le dossier parent (En affichant tous les avertissements éventuels), puis on lance
+Qui créé la configuration ninja dans le dossier parent (En affichant tous les
+avertissements éventuels), puis on lance
 
 \begin{minted}{bash}
 	ninja test
 \end{minted}
 
-Qui éxecute les test préalablement définis.
-
-\textbf{\Huge{TODO}}
+Qui compile l'ensemble et exécute les tests préalablement définis.
 
 \section{Débogage}
+
+\paragraph{} c.f.\ section Profiling (section~\ref{sec:prof}).
 
 \begin{itemize}
 	\item gdb
@@ -177,8 +191,6 @@ Qui éxecute les test préalablement définis.
 	\item gprof
 	\item Kcachegrind
 \end{itemize}
-
-\textbf{\Huge{TODO}}
 
 \part{Implémentation des structures}
 
@@ -193,10 +205,10 @@ coup de tête, sans réflexion au préalable, et abandonné très rapidement. Au
 moyen que cela tourne mal, donc.
 
 \paragraph{} Il est important de préciser qu'au tout début du projet, nous
-avions décidé d'utiliser la BGL (Boost Graph Library) pour implémenter par
-dessus l'algorithme A*. Cependant, après beaucoup de frustration, de cheveux
-perdus, et après avoir remarqué le manque de documentation, tutoriels ou
-ressources en ligne, il était évident que ce serait une chose à ne plus
+avions décidé d'utiliser la BGL (Boost Graph Library) pour implémenter
+par-dessus l'algorithme A*. Cependant, après beaucoup de frustration, de
+cheveux perdus, et après avoir remarqué le manque de documentation, tutoriels
+ou ressources en ligne, il était évident que ce serait une chose à ne plus
 refaire.
 
 \section{État initial}
@@ -382,7 +394,7 @@ graphesques, nous avons décidé de nous attaquer enfin à l'implémentation du
 cœur du projet PR-3602.
 
 \paragraph{} Afin d'enfin nous détacher de cette horrible masse de
-conformistes, nous avons choisir d'utiliser cette fois si le namespace
+conformistes, nous avons choisi d'utiliser cette fois si le namespace
 \texttt{awesome} pour englober notre implémentation. Nous avons aussi décidé de
 démarrer notre propre mouvement contre-culture. Cependant, nous avons un doute
 sur l'efficacité de notre implémentation de la dernière proposition.
@@ -399,7 +411,7 @@ dans le graph de résolution.
 
 \subsection{Nulle}
 
-\paragraph{} Il n'y a pas grand chose à dire ici. Voici la surcharge de
+\paragraph{} Il n'y a pas grand-chose à dire ici. Voici la surcharge de
 \mintinline{cpp}{operator()} pour référence seulement:
 
 \begin{listing}[H]
@@ -421,7 +433,7 @@ algorithme de calcul de minimum avec la méthode \texttt{eachEdges}.
 
 \paragraph{} Oups, nous avons oublié de l'implémenter. Ce n'est pas très grave
 parce que de toute manière la complexité de cette heuristique est trop élevée,
-ou tout autre excuse fournie allègrement par le biais de confirmation ou dénis
+ou tout autre excuse fournie allègrement par le biais de confirmation ou déni
 scientifique.
 
 \subsection{Arbre de poids minimum}
@@ -530,10 +542,11 @@ la classe TSPSolver comporte 8 méthodes:
 \begin{itemize}
 	\item Le constructeur (prends en paramètre la carte de base)
 	\item \texttt{goForIt}, qui lance l'algorithme
-	\item \texttt{finishLine}, qui reconstruit le chemin de villes un fois l'algorithme terminé
+	\item \texttt{finishLine}, qui reconstruit le chemin de villes une fois
+		l'algorithme terminé
 	\item \texttt{develop}, qui développe un sommet du PSG
 	\item \texttt{findInOpenNodes}, qui retourne un itérateur d'un sommet sur
-		la liste OUVERT (je sais pas pourquoi il faut le mettre en majuscule
+		la liste OUVERT (je ne sais pas pourquoi il faut le mettre en majuscule
 		mais c'était sur le site PR-3602).
 	\item \texttt{isGoal}, bah ça vérifie si un sommet est du PSG est un but.
 	\item \texttt{isFailure} pareil que précédemment mais dans le cas d'une
@@ -546,7 +559,7 @@ la classe TSPSolver comporte 8 méthodes:
 \end{itemize}
 
 \paragraph{} ``Il y a 9 méthodes!'' vous empresserez vous de me dire, désireux
-de pointer chaque erreurs de ce rapport. Cependant, tout était prévu: le
+de pointer chaques erreurs de ce rapport. Cependant, tout était prévu: le
 constructeur n'est pas une ``vraie'' méthode, ni
 \mintinline{cpp}{CompareFunc::operator()} qui est dans une structure interne à
 la classe. Chacun compte donc pour $\frac{1}{2}$.
@@ -563,14 +576,14 @@ std::multiset<GraphConstNode, CompareFunc> openNodes;
 \end{minted}
 
 \paragraph{} Il s'agit d'un \texttt{multiset} et non un \texttt{set} car aux
-yeux de ces classes, si l'on fourni notre fonction de comparaison, deux sommets
-ayant le même score $f(n)$ sont égaux. Il nous faut donc un conteneur
+yeux de ces classes, si l'on fournit notre fonction de comparaison, deux
+sommets ayant le même score $f(n)$ sont égaux. Il nous faut donc un conteneur
 permettant de stocker plusieurs sommets ``égaux'', donc \texttt{multiset}.
 
 \paragraph{} Tout le reste s'est passé très vite. Prendre le premier élément de
 la liste \textbf{\huge{OUVERT}}, développer le sommet, ce qui reviens à
 regarder les adjacents du sommet actuel dans la carte intermédiaire, les
-ajouter dans le PSG et la liste \textbf{\Huge{OUVERT}} s'il ne sont pas
+ajouter dans le PSG et la liste \textbf{\Huge{OUVERT}} s'ils ne sont pas
 ``impossibles'', en prenant en compte leur score $g(n)$ et $h(n)$ et la
 nouvelle carte intermédiaire. Il est important de noter qu'il ne faut pas
 supprimer la ville de départ dans les débuts de l'algorithme, sinon le pauvre
@@ -613,11 +626,11 @@ importante sur notre orgueil et autosatisfaction.
 \paragraph{} Nous utilisons aussi cette méthode, même s'il on ne peut plus
 considérer ces tests comme ``unitaire'', pour vérifier que l'algorithme A*
 marche bien avec des cas prédéfinis, et avec plusieurs heuristiques. Il est
-évident que après avoir vérifié sur 3 / 4 / 5 cas, si l'algorithme marche il
+évident qu'après avoir vérifié sur 3 / 4 / 5 cas, si l'algorithme marche il
 est garanti qu'il va marcher dans tous les cas de figures. C'est une loi
 universelle indéniable\ldots
 
-\paragraph{} À noter que le résultat donné est toujours optimal en terme de
+\paragraph{} À noter que le résultat donné est toujours optimal en termes de
 poids mais en fonction de l'heuristique, le chemin peut changer. Cela peut
 faire peur au début quand on voit que ce qui avait marché juste avant affiche
 \textbf{FAILED} avec une autre heuristique. Il suffisait juste de changer le
@@ -626,7 +639,7 @@ chemin de référence, pfiouu\ldots
 \section{Benchmarks}
 
 \paragraph{} Pour agrémenter ce rapport de magnifiques graphiques, nous avons
-choisit de faire des benchmarks (ou tests de performances en français, mais
+choisi de faire des benchmarks (ou tests de performances en français, mais
 c'est beaucoup trop long à taper). Les benchmarks effectués portent sur la
 performance des différentes heuristiques dans le cas de cartes générées comme
 décrit dans la section~\ref{sec:mapgen}. En voici les résultats:
@@ -648,8 +661,8 @@ décrit dans la section~\ref{sec:mapgen}. En voici les résultats:
 \paragraph{} Comme prévu, on remarque que l'heuristique nulle l'est beaucoup.
 L'heuristique \emph{ShortestPathHeuristic}, qui correspond en fait à
 l'heuristique de l'arête de poids minimum, n'est pas bien meilleure. On notera
-que l'on a pas de données pour ces deux heuristiques au delà de 9 villes, car à
-plus de 9 villes la mémoire continue de se faire grignoter jusqu'au dessus de
+que l'on n'a pas de données pour ces deux heuristiques au-delà de 9 villes, car
+à plus de 9 villes la mémoire continue de se faire grignoter jusqu'au-dessus de
 la mémoire physique, ce qui résulte à une utilisation du disque dur à la place,
 et fausse les résultats. Regarder la mémoire grimper graduellement est
 d'ailleurs une expérience assez stressante.
@@ -659,11 +672,11 @@ modélisation, l'heuristique du MST est vraiment impressionnante. Tellement
 impressionnante que j'ai voulu mettre une échelle logarithmique sur l'axe des
 $y$ mais je n'ai pas réussi. On ajoutera que les performances ne sont pas
 toujours constantes. Au contraire il arrive que, dans le cas de 16 villes, on
-dépasse la barre des 15 secondes ou même la limite de mémoire si l'on a pas de
-chance, alors que la majorité des résolutions tourne dans l'ordre de la
+dépasse la barre des 15 secondes ou même la limite de mémoire si l'on n'a pas
+de chance, alors que la majorité des résolutions tourne dans l'ordre de la
 demi-seconde.
 
-\paragraph{} On remarque aussi que les trois courbes on étonnement la forme
+\paragraph{} On remarque aussi que les trois courbes ont étonnement la forme
 d'une exponentielle croissante. Est-ce parce que le problème du voyageur de
 commerce est NP-complet et que l'on utilise l'A*? C'est très probable.
 
@@ -685,18 +698,18 @@ programme a été fait à la base de manière très générique. Notre implémen
 de graphe a été codée de manière à ce que n'importe qui voulant utiliser des
 graphes en C++ pourraient utilise notre bibliothèque. Par conséquence, il n'est
 pas spécifiquement optimisé pour le problème de l'A*, encore moins le problème
-du voyageur de commerce en utilisant l'A*. Cela nous a fait pensé à
+du voyageur de commerce en utilisant l'A*. Cela nous a fait penser à
 \emph{FizzBuzzEnterpriseEdition}~\cite{fun:fizzbuzz} qui est une satire du
-développement en entreprise, en construisant un programme des plus simple mais
+développement en entreprise, en construisant un programme des plus simples mais
 d'une manière la plus improbable qui soit.
 
-\section{Profiling}
+\section{Profiling}~\label{sec:prof}
 
 \paragraph{} Une tentative d'amélioration de performances a été d'utiliser des
 outils spécialisé dans le profiling, pour voir dans notre programme quelles
 fonctions prennent le plus de pourcentage de temps.
 
-\paragraph{} Nous avons commencé à utiliser \emph{gprof} avec un outils nous
+\paragraph{} Nous avons commencé à utiliser \emph{gprof} avec un outil nous
 permettant d'analyser la sortie de \emph{gprof} pour pouvoir nous afficher un
 diagramme. Cependant le diagramme s'est retrouvé d'une taille tellement
 gargantuesque, que l'analyse s'est finie en ``Qui est le premier à arriver à
@@ -707,30 +720,57 @@ trouver le carré le plus rouge qu'il soit?''. Pas très optimal donc.
 agréable à regarder, et donc accroît notre productivité. Les informations qui
 nous a fournie étaient celles qui étaient prévisibles depuis le début, mais qui
 pour une raison quelconque nous avaient échappées. Notamment, les fonctions
-prenant le plus de temps relativement sont les fonctions le plus appelées,
+prenant le plus de temps relativement sont les fonctions les plus appelées,
 comme la fonction de comparaison de sommets de PSG, les heuristiques, et les
 fonctions d'ajout d'arcs, etc.
 
-\paragraph{} Au final, bien qu'en comprenant de mieux en mieux le
+\paragraph{} Finalement, bien qu'en comprenant de mieux en mieux le
 fonctionnement interne de notre programme, nous nous apercevions que nous
 connaissions de moins en moins la source du dit problème de performance.
 
 \section{Passage par référence}
 
 \paragraph{} La solution qui nous a permis de gagner un peu de performance a
-été celle de passer certains paramètre de fonction par référence, c'est à dire
+été celle de passer certains paramètres de fonction par référence, c'est-à-dire
 ne pas copier l'objet pour qu'il soit utilisé à l'intérieur de la fonction mais
 de le passer directement, comme si nous utilisions un pointeur, mais sans
 pointeur (la magie du C++).
 
-\paragraph{} Cette solutions nous a permis de gagner quelques secondes sur des
+\paragraph{} Cette solution nous a permis de gagner quelques secondes sur des
 tests ayant une durée un peu conséquente.
 
-\part{Pour aller plus loin}
+\part{Notes de fin}
 
-{\Huge TODO}
+\paragraph{} Tout d'abords nous voudrions nous excuser de la longueur de notre
+rapport, cependant comme nous avons fait les choses de manière
+non-conventionnelle, il nous semblait justifié de les expliquer ou tout
+simplement d'en parler.
 
-generic astar solver
+\paragraph{} Il me paraît intéressant de parler aussi de la manière dont est
+organisé l'arborescence de fichier de notre base de code. Voici la structure:
+\\
+\dirtree{%
+	.1 PR-3602.
+		.2 benchmarks \emph{(les comparaisons d'heuristiques)}.
+		.2 dist \emph{(les sources pour générer le joli graphe)}.
+		.2 doc \emph{(la documentation Doxygen)}.
+		.2 report \emph{(les sources de ce qu'il a sous vos yeux)}.
+		.2 src.
+			.3 heuristics \emph{(le code source des différentes heuristiques)}.
+			.3 solver \emph{(l'algorithme de résolution)}.
+		.2 subprojects.
+			.3 graph \emph{(notre bibliothèque de graphes)}.
+				.4 benchmarks \emph{(quelques benchmarks sur les graphes)}.
+				.4 src.
+					.4 graph \emph{(le code source de notre bibliothèque de graphes)}.
+				.4 tests \emph{(le code source de nos tests unitaire sur les graphes)}.
+			.3 celero \emph{(le code source la bibliothèque de benchmarking utilisée)}.
+		.2 tests \emph{(le code source de nos tests unitaire concernant l'A*)}.
+}
+
+~\\~\\
+
+\hfill Merci d'avoir lu jusqu'au bout.
 
 \printbibliography%
 
